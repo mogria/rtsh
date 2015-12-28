@@ -2,8 +2,8 @@ FROM python
 MAINTAINER "Mogria <m0gr14@gmail.com>"
 
 RUN mkdir /gamesrv && \
-    groupadd rtshplayers && \
-    useradd rtshsrv --groups rtshplayers
+    groupadd --gid 1312 rtshplayers && \
+    useradd --uid 1337 rtshsrv
 
 ADD srv.py /gamesrv/srv.py
 ADD create-player.sh /gamesrv/create-player.sh
