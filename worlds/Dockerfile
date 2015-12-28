@@ -6,3 +6,5 @@ MAINTAINER "Mogria <m0gr14@gmail.com>"
 RUN mkdir /world
 
 VOLUME ["/world", "/home"]
+
+ENTRYPOINT ["/bin/true"]
