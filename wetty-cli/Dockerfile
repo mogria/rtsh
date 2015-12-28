@@ -3,7 +3,8 @@ FROM krishnasrinivas/wetty:latest
 MAINTAINER "Mogria m0gr14@gmail.com"
 
 
-RUN mkdir /rts && \
+RUN userdel term && \
+    mkdir /rts && \
     echo 'export PATH="$PATH:/rts"' > /etc/profile.d/rts-path.sh && \
     groupadd --gid 1312 rtshplayers && \
     useradd --uid 1337 rtshsrv
