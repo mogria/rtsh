@@ -1,12 +1,13 @@
 #!/bin/bash
-SOURCE_LOCATION="$( cd "$(dirname "$0")" && pwd )"
+. func.sh
+SOURCE_LOCATION="$(get_source_location)"
 
 if [ "$#" -lt 2 ]; then
     echo "Usage: $0 worldname playernames..."
     echo ""
     echo "You need to pass the worldname and at least 1 player name."
     echo "The worlds available are: "
-    find "$SOURCE_LOCATION/worlds" -mindepth 1 -maxdepth 1 -type d -printf " - %f\n"
+    get_worlds | xargs -n1 printf " - %s"
     echo ""
     exit 1
 fi
