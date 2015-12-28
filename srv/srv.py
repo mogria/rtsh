@@ -8,16 +8,19 @@
 
 import sys
 import os
+import pwd
+import subprocess
 
 # ************** functions
 
-def createPlayerHomeDir(playerDir):
-	print("trying to create home dir: ", playerDir) 
-	if not os.path.exists(playerDir):
-		os.mkdir(playerDir)
-		print("created home dir: ", playerDir)
+def createPlayer(playerName):
+	print("trying to create player: ", playerName) 
+	wasSuccessfull = os.system("./create-player.sh " + playerName) == 0
+	if wasSuccessfull:
+		print("created player: ", playerName)
 	else:
-		print("home dir already available: ", playerDir)
+		print("player already available: ", playerName)
+
 
 def createPipe(playerDir):
 	queuePath = os.path.join(playerDir, "command-queue")
@@ -29,28 +32,40 @@ def createPipe(playerDir):
 		print("queue already available: ", queuePath)
 
 
+def changeToLowerPriviledgedUser():
+	print("trying to change user to rtshsrv")
+	print(subprocess.check_output("whoami"))
+	uid = pwd.getpwnam("rtshsrv")[2]
+	os.setuid(uid)
+	print(subprocess.check_output("whoami"))
+	print("changed user to rtshsrv")
+
+
+def main():
+	print("hello world, no just joking going to work now...")
+
+	numberOfPlayers = len(sys.argv)
+	for i in range(1, numberOfPlayers):
+
+		playerName = sys.argv[i]
+		print("player name: ", playerName)
+	
+		createPlayer(playerName)
+	
+		playerDir = os.path.join("/home", playerName)
+		print("player dir: ", playerDir)
+		createPipe(playerDir)
+
+	changeToLowerPriviledgedUser()
+
+	print("started")	
+
 
 
 # ************** start
 
-print("hello world, no just jocking going to work now...")
+print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
-
-numberOfPlayers = len(sys.argv)
-for i in range(1, numberOfPlayers):
-
-	playerDir = sys.argv[i]
-	print("player dir: ", playerDir)
-	
-	createPlayerHomeDir(playerDir)
-	createPipe(playerDir)
-
-
-print("started")	
-
-
-
-
-
+main()
 
 

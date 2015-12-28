@@ -13,3 +13,4 @@ useradd --password "" \
         --home-dir "/home/$1" \
         "$1"
 
+exit $?
