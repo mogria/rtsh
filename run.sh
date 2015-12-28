@@ -38,7 +38,7 @@ fi
 
 SRV_DOCKER_OPTS=
 if [ -n "$RTSH_DEVELOP" ]; then
-    # if $RTSH_DEVELOP is set mount the actual code of this project into the docker container, not the prebuilt code in the image
+    # if $RTSH_DEVELOP is set, mount the code inside srv/ of this project into the docker container, not the prebuilt code in the image
     SRV_DOCKER_OPTS="-v $SOURCE_LOCATION/srv:/gamesrv:ro"
 fi
 
