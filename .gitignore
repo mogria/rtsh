@@ -1,0 +1,6 @@
+# backup files (vi)
+*~
+*.sw*
+
+# log files
+*.log
