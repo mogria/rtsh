@@ -1,5 +1,5 @@
 # this is the base image for all world images
-FROM alpine:latest
+FROM debian:jessie
 
 MAINTAINER "Mogria <m0gr14@gmail.com>"
 
@@ -9,8 +9,9 @@ RUN groupadd --gid 1312 rtshplayers && \
     useradd --uid 1337 rtshsrv && \
     chmod +x /home/create-player.sh
 
-USER rtshsrv
-RUN mkdir /world
+RUN mkdir /world && \
+    chown -R rtshsrv:rtshsrv world
+
 
 VOLUME ["/world", "/home"]
 
