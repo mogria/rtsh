@@ -21,4 +21,4 @@ useradd --password "" \
         --groups rtshplayers \
         "$1"
 
-
+exit $?
