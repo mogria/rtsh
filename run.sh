@@ -53,11 +53,11 @@ fi
 
 echo " * starting the game server"
 docker run \
+    --detach \
     $SRV_DOCKER_OPTS \
     --volumes-from "$WORLD_CONTAINER_NAME" \
     --name rtsh-srv \
-    mogria/rtsh-srv "${PLAYERS[@]}" \
-    2> "$SOURCE_LOCATION/srv.log" > "$SOURCE_LOCATION/srv.log" &
+    mogria/rtsh-srv "${PLAYERS[@]}"
 
 echo " * starting the wetty client"
 # start the client
@@ -66,7 +66,7 @@ docker run \
     $CLI_DOCKER_OPTS \
     --volumes-from "$WORLD_CONTAINER_NAME" \
     --name rtsh-wetty-cli \
-    mogria/rtsh-wetty-cli
+    mogria/rtsh-wetty-cli "${PLAYERS[@]}"
 
 # show server output
-tail -f "$SOURCE_LOCATION/srv.log"
+docker attach rtsh-srv
