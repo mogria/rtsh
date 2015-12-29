@@ -11,7 +11,7 @@ RUN userdel term && \
 
 ADD rts /rts/rts
 ADD public /app/public
-ADD start-script /usr/bin/start-script.sh
+ADD start-script.sh /usr/bin/start-script.sh
 
 RUN chmod 700 /usr/bin/start-script.sh
 
