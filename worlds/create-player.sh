@@ -10,13 +10,13 @@ NEWUID=9001
 # to register users. so this script can get these passwords.
 
 
-while ! cut -d: -f1 | grep -E "^$NEWUID\$"; do
-    NEWUID="$((NEWUID + 1))"
-done
+#while ! cut -d: -f1 | grep -E "^$NEWUID\$"; do
+#    NEWUID="$((NEWUID + 1))"
+#done
 
 useradd --password "" \
         --create-home  \
-        --uid "$NEWUID"
+        --uid "$NEWUID" \
         --home-dir "/home/$1" \
         --groups rtshplayers \
         "$1"

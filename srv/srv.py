@@ -15,7 +15,10 @@ import subprocess
 
 def createPlayer(playerName):
 	print("trying to create player: ", playerName) 
-	wasSuccessfull = os.system("./create-player.sh " + playerName) == 0
+	result = subprocess.call(["/home/create-player.sh", playerName])
+	print(result)
+	wasSuccessfull = result == 0
+	print(wasSuccessfull)
 	if wasSuccessfull:
 		print("created player: ", playerName)
 	else:
@@ -42,7 +45,8 @@ def changeToLowerPriviledgedUser():
 
 
 def main():
-	print("hello world, no just joking going to work now...")
+	print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+	print("server: hello world, no just joking going to work now...")
 
 	numberOfPlayers = len(sys.argv)
 	for i in range(1, numberOfPlayers):
@@ -63,8 +67,6 @@ def main():
 
 
 # ************** start
-
-print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
 main()
 
