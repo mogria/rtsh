@@ -7,17 +7,11 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-OPTIND=1 # reset getopts
-
 CREATE_HOME="--create-home"
-while getopts "h?" opt; do
-    case "$opt" in
-        n) CREATE_HOME="-m"
-           ;;
-    esac
-done
-
-shift "$((OPTIND - 1))" # remove all non-positional arguments
+if [ "$1" == "-n" ]; then
+    CREATE_HOME="-M"
+    shift
+fi
 
 NEWUID=9001
 
@@ -25,12 +19,12 @@ NEWUID=9001
 # to register users. so this script can get these passwords.
 
 
-while ! cut -d: -f3 "/etc/passwd" | grep -E "^$NEWUID$"; do
+while cut -d: -f3 "/etc/passwd" | grep -E "^$NEWUID$"; do
     NEWUID="$((NEWUID + 1))"
 done
 
 useradd --password "" \
-        $CREATE_HOME
+        $CREATE_HOME \
         --uid "$NEWUID" \
         --home-dir "/home/$1" \
         --groups rtshplayers \
