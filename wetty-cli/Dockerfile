@@ -10,10 +10,14 @@ RUN userdel term && \
     useradd --uid 1337 rtshsrv
 
 ADD rts /rts/rts
+ADD public /app/public
+ADD start-script /usr/bin/start-script.sh
+
+RUN chmod 700 /usr/bin/start-script.sh
 
 # for every command the client has add a symlink to rts here:
 RUN ln /rts/rts /rts/move
 
 VOLUME ["/world", "/home", "/rts"]
  
-ENTRYPOINT ["node", "app.js", "-p", "3000"]
+ENTRYPOINT ["start-script.sh"]
