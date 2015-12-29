@@ -23,11 +23,15 @@ while cut -d: -f3 "/etc/passwd" | grep -E "^$NEWUID$"; do
     NEWUID="$((NEWUID + 1))"
 done
 
-useradd --password "" \
+useradd --password "*" \
         $CREATE_HOME \
         --uid "$NEWUID" \
         --home-dir "/home/$1" \
         --groups rtshplayers \
+        --shell /bin/bash \
         "$1"
+
+# set rtsh as password
+echo "$1:rtsh" | chpasswd
 
 exit $?
