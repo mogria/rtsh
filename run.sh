@@ -51,14 +51,6 @@ if [ -n "$RTSH_DEVELOP" ]; then
 fi
 
 
-echo " * starting the game server"
-docker run \
-    --detach \
-    $SRV_DOCKER_OPTS \
-    --volumes-from "$WORLD_CONTAINER_NAME" \
-    --name rtsh-srv \
-    mogria/rtsh-srv "${PLAYERS[@]}"
-
 echo " * starting the wetty client"
 # start the client
 docker run \
@@ -66,7 +58,12 @@ docker run \
     $CLI_DOCKER_OPTS \
     --volumes-from "$WORLD_CONTAINER_NAME" \
     --name rtsh-wetty-cli \
+    --hostname "$WORLD" \
     mogria/rtsh-wetty-cli "${PLAYERS[@]}"
 
-# show server output
-docker attach rtsh-srv
+echo " * starting the game server"
+docker run \
+    $SRV_DOCKER_OPTS \
+    --volumes-from "$WORLD_CONTAINER_NAME" \
+    --name rtsh-srv \
+    mogria/rtsh-srv "${PLAYERS[@]}"
