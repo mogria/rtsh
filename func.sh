@@ -1,9 +1,5 @@
 #!/bin/bash
 
-get_source_location() {
-    cd "$(dirname "$0")" && pwd
-}
-
 get_worlds() {
-    find "$(get_source_location)/worlds" -mindepth 1 -maxdepth 1 -type d -printf "%f"
+    find "$(cd "$(dirname "$0")" && pwd)/worlds" -mindepth 1 -maxdepth 1 -type d -printf "%f"
 }

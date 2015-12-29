@@ -31,6 +31,12 @@ Contains some info about the map. Size, name and the like. (split into multiple 
 
 The map is a 2D grid. Each cell of this grid is called a tile. For each tile there is a folder with the name of it's coordinates. This folder then contains files specific to this tile.
 
+Every tile folder should have the following files
+
+  * `terrain.json` - Contains info about what kind of terrain this tile is (forest, snow, grass, ...)
+  * `units/` - Folder with a symlink to every unit in the `$HOME/units` of the respective players
+  * `building` . A symlink to the building in $HOME/building of the respective player, *(optional)*
+
 ## Open questions:
 
  * share a single docker container for all users?

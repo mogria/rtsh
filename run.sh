@@ -1,6 +1,11 @@
 #!/bin/bash
-. func.sh
-SOURCE_LOCATION="$(get_source_location)"
+# this script runs 3 docker containers
+# - the game world
+# - the game server
+# - the wetty client which handles all the clients
+
+SOURCE_LOCATION="$(cd "$(dirname "$0")" && pwd)"
+. "$SOURCE_LOCATION/func.sh"
 
 if [ "$#" -lt 2 ]; then
     echo "Usage: $0 worldname playernames..."
@@ -38,9 +43,11 @@ if [ "$?" -ne 0 ]; then
 fi
 
 SRV_DOCKER_OPTS=
+CLI_DOCKER_OPTS="--publish 127.0.0.1:80:3000"
 if [ -n "$RTSH_DEVELOP" ]; then
     # if $RTSH_DEVELOP is set, mount the code inside srv/ of this project into the docker container, not the prebuilt code in the image
     SRV_DOCKER_OPTS="-v $SOURCE_LOCATION/srv:/gamesrv:ro"
+    CLI_DOCKER_OPTS="--publish 0.0.0.0:80:3000"
 fi
 
 
@@ -56,6 +63,7 @@ echo " * starting the wetty client"
 # start the client
 docker run \
     --detach \
+    $CLI_DOCKER_OPTS \
     --volumes-from "$WORLD_CONTAINER_NAME" \
     --name rtsh-wetty-cli \
     mogria/rtsh-wetty-cli

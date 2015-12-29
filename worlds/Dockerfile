@@ -10,7 +10,7 @@ RUN groupadd --gid 1312 rtshplayers && \
     chmod +x /home/create-player.sh
 
 RUN mkdir /world && \
-    chown -R rtshsrv:rtshsrv world
+    chown -R rtshsrv:rtshsrv /world
 
 
 VOLUME ["/world", "/home"]

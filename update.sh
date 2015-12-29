@@ -2,7 +2,8 @@
 # this script updates all the docker containers (to the :latest tag)
 # used by this project
 
-. func.sh
+SOURCE_LOCATION="$(cd "$(dirname "$0")" && pwd)"
+. "$SOURCE_LOCATION/func.sh"
 
 docker pull mogria/rtsh-srv
 docker pull mogria/rtsh-wetty-cli
