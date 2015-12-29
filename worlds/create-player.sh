@@ -34,4 +34,16 @@ useradd --password "*" \
 # set rtsh as password
 echo "$1:rtsh" | chpasswd
 
+
+# create basic layout of home directory
+cd "/home/$1"
+mkdir units/
+mkdir buildings/
+
+chown -R rtshsrv:rtshplayers units/
+chown -R rtshsrv:rtshplayers buildings/
+
+chmod 750 /units
+chmod 750 /buildings
+
 exit $?
