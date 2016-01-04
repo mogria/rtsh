@@ -8,9 +8,20 @@
 
 int Tiles_X = 0;
 int Tiles_Y = 0;
-const std::string BASEPATH = "world/";
+const std::string BASEPATH = "./";
+
+#define NUM_TERRAIN_TYPES 4
+
+char terrain_types[NUM_TERRAIN_TYPES][80] = {
+    "grass",
+    "desert",
+    "woods",
+    "plain"
+};
+
 int main(int argc, char* argv[])
 {
+    srand(time(NULL));
 	// Check the number of parameters
     if (argc != 3) {
         // Tell the user how to run the program
@@ -27,8 +38,6 @@ int main(int argc, char* argv[])
   	std::string path_y;
   	char tmp[5];
 
-  	mkdir(BASEPATH.c_str(),0755);
-
 	for(int i = 0; i < Tiles_X; i++)
 	{
 	  	sprintf(tmp, "%d", i);
@@ -41,6 +50,11 @@ int main(int argc, char* argv[])
 			sprintf(tmp, "%d", j);
 			path_y = path_x+"/"+tmp;
 		    mkdir(path_y.c_str(),0755);
+            FILE *outfile = fopen((path_y + "/terrain.json").c_str(), "w");
+            fprintf(outfile, "{\n"
+                             "  type: \"%s\"\n"
+                             "}\n", terrain_types[rand() % NUM_TERRAIN_TYPES]);
+            fclose(outfile);
 	    }
 	}
 	printf("%i tiles were generated\n",Tiles_X*Tiles_Y);
