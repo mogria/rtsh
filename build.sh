@@ -2,12 +2,15 @@
 # build all docker containers from the source, so you don't need to pull
 # them with the update.sh script
 
+# pass arguments to this script file to the `docker build` command later
+BUILD_ARGS=("$@")
+
 SOURCE_LOCATION="$(cd "$(dirname "$0")" && pwd)"
 . "$SOURCE_LOCATION/func.sh"
 
 build() {
     echo " * Building $1"
-    docker build -t "$1" "$SOURCE_LOCATION/$2"
+    docker build -t "$1" "${BUILD_ARGS[@]}" "$SOURCE_LOCATION/$2"
 }
 
 build mogria/rtsh-srv srv && \
