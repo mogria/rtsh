@@ -43,28 +43,45 @@ if [ "$?" -ne 0 ]; then
 fi
 
 SRV_DOCKER_OPTS=
-CLI_DOCKER_OPTS="--publish 0.0.0.0:80:3000"
+CLI_DOCKER_OPTS="--detach --publish 0.0.0.0:80:3000"
 if [ -n "$RTSH_DEVELOP" ]; then
     # if $RTSH_DEVELOP is set, mount the code inside srv/ of this project into the docker container, not the prebuilt code in the image
     echo "mounting source directories into containers"
     SRV_DOCKER_OPTS="-v $SOURCE_LOCATION/srv:/gamesrv:ro"
-    CLI_DOCKER_OPTS="--publish 127.0.0.1:80:3000 -v $SOURCE_LOCATION/wetty-cli:/app:ro"
+    CLI_DOCKER_OPTS="--detach --publish 127.0.0.1:80:3000 -v $SOURCE_LOCATION/wetty-cli:/app:ro"
+fi
+
+start_client() {
+    echo " * starting the wetty client"
+    # start the client
+    docker run \
+        $CLI_DOCKER_OPTS \
+        --volumes-from "$WORLD_CONTAINER_NAME" \
+        --name rtsh-wetty-cli \
+        --hostname "$WORLD" \
+        mogria/rtsh-wetty-cli "${PLAYERS[@]}"
+}
+
+start_server() {
+    echo " * starting the game server"
+    docker run \
+        $SRV_DOCKER_OPTS \
+        --volumes-from "$WORLD_CONTAINER_NAME" \
+        --name rtsh-srv \
+        mogria/rtsh-srv "${PLAYERS[@]}"
+}
+
+# show the output of the client container instead of the server container 
+# if the environment variable SHOW_CLIENT is set
+if [ -n "$SHOW_CLIENT" ]; then
+    CLI_DOCKER_OPTS="$(echo "$CLI_DOCKER_OPTS" | sed 's/--detach//g')"
+    SRV_DOCKER_OPTS="--detach $SRV_DOCKER_OPTS"
+    start_server
+    start_client
+else
+    start_client
+    start_server
 fi
 
 
-echo " * starting the wetty client"
-# start the client
-docker run \
-    --detach \
-    $CLI_DOCKER_OPTS \
-    --volumes-from "$WORLD_CONTAINER_NAME" \
-    --name rtsh-wetty-cli \
-    --hostname "$WORLD" \
-    mogria/rtsh-wetty-cli "${PLAYERS[@]}"
 
-echo " * starting the game server"
-docker run \
-    $SRV_DOCKER_OPTS \
-    --volumes-from "$WORLD_CONTAINER_NAME" \
-    --name rtsh-srv \
-    mogria/rtsh-srv "${PLAYERS[@]}"
