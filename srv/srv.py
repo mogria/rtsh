@@ -20,6 +20,13 @@ def p(*args):
 	print(text)
 	sys.stdout.flush()
 
+
+def changeOwner(path, userName):
+	uid = pwd.getpwnam(userName).pw_uid
+	gid = pwd.getpwnam(userName).pw_gid
+	os.chown(path, uid, gid)
+
+
 def createPlayer(playerName):
 	p("trying to create player: ", playerName) 
 	result = subprocess.call(["/home/create-player.sh", playerName])
@@ -42,10 +49,8 @@ def createPipe(playerName):
 	queuePath = getQueuePathFromPlayerName(playerName)
 	p("trying to create queue: ", queuePath)
 	if not os.path.exists(queuePath):
-		uid = pwd.getpwnam(playerName).pw_uid
-		gid = pwd.getpwnam(playerName).pw_gid
 		os.mkfifo(queuePath)
-		os.chown(queuePath, uid, gid)
+		changeOwner(queuePath, playerName)
 		p("created queue: ", queuePath)
 	else:
 		p("queue already available: ", queuePath)
