@@ -81,6 +81,12 @@ def prepare():
 	p("done with preparation")
 
 
+def callCommand(commandWithArgs):
+	pathToCommands = "/gamesrv/commands"
+	fullPath = os.path.join(pathToCommands, commandWithArgs)
+	p(os.system(fullPath))
+
+
 def main():
 	p("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 	p("server: hello world, no just joking going to work now...")
@@ -96,12 +102,12 @@ def main():
 		c+=1		
 		numberOfPlayers = len(sys.argv)
 		for i in range(1, numberOfPlayers):
-			p("player ", i)
 			playerName = sys.argv[i]
+			p("player: ", playerName)
 			queuePath = getQueuePathFromPlayerName(playerName)
 			with open(queuePath) as commandQueue:
-				line = commandQueue.readline()
-				p(line)
+				commandWithArgs = commandQueue.readline()
+				callCommand(commandWithArgs)
 		
 
 
