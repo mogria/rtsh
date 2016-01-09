@@ -25,11 +25,22 @@ def createPlayer(playerName):
 		print("player already available: ", playerName)
 
 
-def createPipe(playerDir):
+def createPipe(playerName):
+
+	playerDir = os.path.join("/home", playerName)
+	print("player dir: ", playerDir)
+
 	queuePath = os.path.join(playerDir, "command-queue")
 	print("trying to create queue: ", queuePath)
 	if not os.path.exists(queuePath):
+		
+
+		uid = pwd.getpwnam(playerName).pw_uid
+		gid = pwd.getpwnam(playerName).pw_gid
 		os.mkfifo(queuePath)
+		os.chown(queuePath, uid, gid)
+
+
 		print("created queue: ", queuePath)
 	else:
 		print("queue already available: ", queuePath)
@@ -38,7 +49,7 @@ def createPipe(playerDir):
 def changeToLowerPriviledgedUser():
 	print("trying to change user to rtshsrv")
 	print(subprocess.check_output("whoami"))
-	uid = pwd.getpwnam("rtshsrv")[2]
+	uid = pwd.getpwnam("rtshsrv").pw_uid
 	os.setuid(uid)
 	print(subprocess.check_output("whoami"))
 	print("changed user to rtshsrv")
@@ -56,9 +67,7 @@ def main():
 	
 		createPlayer(playerName)
 	
-		playerDir = os.path.join("/home", playerName)
-		print("player dir: ", playerDir)
-		createPipe(playerDir)
+		createPipe(playerName)
 
 	changeToLowerPriviledgedUser()
 
