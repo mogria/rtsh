@@ -3,6 +3,23 @@
 # - the game world
 # - the game server
 # - the wetty client which handles all the clients
+#
+# The following environment variables can affect the behaviour of this script:
+#
+# * RTSH_DEVELOP  
+#   When set to a non-empty string the current source code in srv/ and wetty-cli/public
+#   is mounted as a volume to the respective containers. Also 127.0.0.1 is the default
+#   bind address for the wetty client.
+# * SHOW_CLIENT  
+#   When set to a non-empty string the output of the rtsh-wetty-cli container is shown
+#   instead of the rtsh-srv container.
+# * RTSH_BIND_ADDRESS
+#   Set the ip the rtsh-wetty-cli container should bind to.
+#   (This also overrides the 127.0.0.1 default of RTSH_DEVELOP)
+# * RTSH_PORT
+#   The port on which the rtsh-wetty-cli container should listen to
+#   on the host part (default `80`)
+
 
 SOURCE_LOCATION="$(cd "$(dirname "$0")" && pwd)"
 . "$SOURCE_LOCATION/func.sh"
@@ -43,12 +60,13 @@ if [ "$?" -ne 0 ]; then
 fi
 
 SRV_DOCKER_OPTS=
-CLI_DOCKER_OPTS="--detach --publish 0.0.0.0:80:3000"
+RTSH_PORT="${RTSH_PORT:-80}"
+CLI_DOCKER_OPTS="--detach --publish ${RTSH_BIND_ADDRESS:-0.0.0.0}:$RTSH_PORT:3000"
 if [ -n "$RTSH_DEVELOP" ]; then
     # if $RTSH_DEVELOP is set, mount the code inside srv/ of this project into the docker container, not the prebuilt code in the image
     echo "mounting source directories into containers"
     SRV_DOCKER_OPTS="-v $SOURCE_LOCATION/srv:/gamesrv:ro"
-    CLI_DOCKER_OPTS="--detach --publish 127.0.0.1:80:3000 -v $SOURCE_LOCATION/wetty-cli/public:/app/public:ro"
+    CLI_DOCKER_OPTS="--detach --publish ${RTSH_BIND_ADDRESS:-127.0.0.1}:$RTSH_PORT:3000 -v $SOURCE_LOCATION/wetty-cli/public:/app/public:ro"
     chmod -R 755 $SOURCE_LOCATION/srv/commands
 fi
 
