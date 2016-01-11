@@ -11,10 +11,12 @@ import pwd
 import subprocess
 import time
 import stat
+import shutil
 
 
 TICK_INTERVAL_SEC = 1
 USER_RTSHSRV = "rtshsrv"
+GROUP_RTSHPLAYERS = "rtshplayers"
 
 
 # ************** functions
@@ -31,17 +33,11 @@ def removeNewLineCharacters(s):
 		s = s[:-1]
 	return s
 
-def changeOwner(path, userName):
-	uid = pwd.getpwnam(userName).pw_uid
-	gid = pwd.getpwnam(userName).pw_gid
-	os.chown(path, uid, gid)
-
-
-
 def getQueuePathFromPlayerName(playerName):
 	playerDir = os.path.join("/home", playerName)
 	queuePath = os.path.join(playerDir, "command-queue")
 	return queuePath
+
 
 
 def createPlayer(playerName):
@@ -57,9 +53,9 @@ def createPipe(playerName):
 	queuePath = getQueuePathFromPlayerName(playerName)
 	pipe = open(queuePath, "w+")
 	pipe.close()
-	userRWOthersRW = stat.S_IREAD | stat.S_IWRITE | stat.S_IROTH | stat.S_IWOTH
-	os.chmod(queuePath, userRWOthersRW)
-	changeOwner(queuePath, playerName)
+	userRWGroupWOnly = stat.S_IREAD | stat.S_IWRITE | stat.S_IWGRP
+	os.chmod(queuePath, userRWGroupWOnly)
+	shutil.chown(queuePath, USER_RTSHSRV, GROUP_RTSHPLAYERS)
 	p("created queue: ", queuePath)
 
 
@@ -116,7 +112,7 @@ def startTickSystem():
 	while(True):
 		time.sleep(TICK_INTERVAL_SEC)
 		p("tick ", tick)
-		tick++
+		tick+=1
 		processAllUsersCommands()	
 	
 
