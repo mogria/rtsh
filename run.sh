@@ -49,6 +49,7 @@ if [ -n "$RTSH_DEVELOP" ]; then
     echo "mounting source directories into containers"
     SRV_DOCKER_OPTS="-v $SOURCE_LOCATION/srv:/gamesrv:ro"
     CLI_DOCKER_OPTS="--detach --publish 127.0.0.1:80:3000 -v $SOURCE_LOCATION/wetty-cli/public:/app/public:ro"
+    chmod -R 755 $SOURCE_LOCATION/srv/commands
 fi
 
 start_client() {
