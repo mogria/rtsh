@@ -13,11 +13,12 @@ This part also stored within the file as an `"id"`.
         "type": (UnitType)
     }
 
-## terrain.json
+## tile.json
 
     {
-        "class": "terrain",
-        "type": (TerrainType)
+        "class": "tile",
+        "terrain": (TerrainType)
+        "size": [(int), (int)],
     }
 
 ## building-#.json
@@ -32,8 +33,7 @@ This part also stored within the file as an `"id"`.
 
     {
         "class": "world",
-        "size_x": (int),
-        "size_y": (int),
+        "size": [(int), (int)],
         "terrain_generator": (String),
         "seed": (int)
     }
