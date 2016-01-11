@@ -19,7 +19,7 @@ new() {
         return 1
     fi
 
-    CLASSES=( "terrain"  "world" "unit" "building" )
+    CLASSES=( "tile"  "world" "unit" "building" )
     if containsElement "$1" "${CLASSES[@]}"; then
         echo '{}' | set_attr_str class "$1"
         return 0
@@ -27,9 +27,9 @@ new() {
     return 1
 }
 
-new_terrain() {
+new_tile() {
     if containsElement "$1" "${TERRAIN_TYPES[@]}"; then
-        new "terrain" | set_attr_str type "$1"
+        new "tile" | set_attr_str terrain "$1" | set_attr position "[$2, $3]"
         return 0
     fi
     return 1
@@ -40,7 +40,7 @@ new_world() {
         return 1
     fi
 
-    output="$(new "world" | set_attr_str name "$1" | set_attr size_x "$2" | set_attr size_y "$3")"
+    output="$(new "world" | set_attr_str name "$1" | set_attr size "[$2, $3]")"
     
     if [ "$#" -ge 4 ]; then
         output="$(echo "$output" | set_attr_str terrain_generator "$4")"

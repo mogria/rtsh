@@ -22,7 +22,7 @@ for ((y = 0; y < SIZEY; y++)); do
     for ((x = 0; x < SIZEX; x++)); do
         mkdir -p "$x/$y"
         terrain="$(terrain_generator_${TERRAIN_GENERATOR} "$x" "$y")"
-        new_terrain "$terrain" > "$x/$y/terrain.json"
+        new_tile "$terrain" "$x" "$y" > "$x/$y/tile.json"
         mkdir "$x/$y/units"
     done
 done
