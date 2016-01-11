@@ -9,6 +9,13 @@ import sys
 import os
 import pwd
 import subprocess
+import time
+import stat
+
+
+TICK_INTERVAL_SEC = 1
+USER_RTSHSRV = "rtshsrv"
+
 
 # ************** functions
 
@@ -19,6 +26,11 @@ def p(*args):
 
 	print(text)
 	sys.stdout.flush()
+
+def removeNewLineCharacters(s):
+	if s.endswith("\n"):
+		s = s[:-1]
+	return s
 
 
 def changeOwner(path, userName):
@@ -47,22 +59,21 @@ def getQueuePathFromPlayerName(playerName):
 
 def createPipe(playerName):
 	queuePath = getQueuePathFromPlayerName(playerName)
-	p("trying to create queue: ", queuePath)
-	if not os.path.exists(queuePath):
-		os.mkfifo(queuePath)
-		changeOwner(queuePath, playerName)
-		p("created queue: ", queuePath)
-	else:
-		p("queue already available: ", queuePath)
+	pipe = open(queuePath, "w+")
+	pipe.close()
+	userRWOthersRW = stat.S_IREAD | stat.S_IWRITE | stat.S_IROTH | stat.S_IWOTH
+	os.chmod(queuePath, userRWOthersRW)
+	changeOwner(queuePath, playerName)
+	p("created queue: ", queuePath)
 
 
 def changeToLowerPriviledgedUser():
-	p("trying to change user to rtshsrv")
+	p("trying to change user to " + USER_RTSHSRV)
 	p(subprocess.check_output("whoami"))
-	uid = pwd.getpwnam("rtshsrv").pw_uid
+	uid = pwd.getpwnam(USER_RTSHSRV).pw_uid
 	os.setuid(uid)
 	p(subprocess.check_output("whoami"))
-	p("changed user to rtshsrv")
+	p("changed user to " + USER_RTSHSRV)
 
 
 def prepare():
@@ -87,17 +98,10 @@ def callCommand(commandWithArgs):
 	p(os.system(fullPath))
 
 
-def main():
-	p("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-	p("server: hello world, no just joking going to work now...")
-
-	prepare()
-
-
-	p("starting tick system now")
-	
+def startTickSystem():
 	c = 0
 	while(True):
+		time.sleep(TICK_INTERVAL_SEC)
 		p("iteration ", c)
 		c+=1		
 		numberOfPlayers = len(sys.argv)
@@ -105,9 +109,25 @@ def main():
 			playerName = sys.argv[i]
 			p("player: ", playerName)
 			queuePath = getQueuePathFromPlayerName(playerName)
-			with open(queuePath) as commandQueue:
-				commandWithArgs = commandQueue.readline()
-				callCommand(commandWithArgs)
+			with open(queuePath, "r") as commandQueue:
+				commandsWithArgs = commandQueue.readlines()
+				for command in commandsWithArgs:
+					command = removeNewLineCharacters(command)
+					p(command)
+					callCommand(command)
+			with open(queuePath, "w") as commandQueue:
+				commandQueue.truncate(0)
+
+
+def main():
+	p("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+	p("server: hello world, no just joking going to work now...")
+
+	prepare()
+
+	p("starting tick system now")
+	
+	startTickSystem()
 		
 
 
