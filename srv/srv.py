@@ -38,9 +38,6 @@ def changeOwner(path, userName):
 
 
 
-
-
-
 def getQueuePathFromPlayerName(playerName):
 	playerDir = os.path.join("/home", playerName)
 	queuePath = os.path.join(playerDir, "command-queue")
@@ -67,7 +64,7 @@ def createPipe(playerName):
 
 
 def changeToLowerPriviledgedUser():
-	p("trying to change user to " + USER_RTSHSRV)
+	p("trying to change user to ", USER_RTSHSRV)
 	p(subprocess.check_output("whoami"))
 	uid = pwd.getpwnam(USER_RTSHSRV).pw_uid
 	os.setuid(uid)
@@ -88,32 +85,40 @@ def prepare():
 
 
 
-
 def callCommand(commandWithArgs):
 	pathToCommands = "/gamesrv/commands"
 	fullPath = os.path.join(pathToCommands, commandWithArgs)
 	p(os.system(fullPath))
 
 
+def processCommandsFor(playerName):
+	p("player: ", playerName)
+	queuePath = getQueuePathFromPlayerName(playerName)
+	with open(queuePath, "r") as commandQueue:
+		commandsWithArgs = commandQueue.readlines()
+		for command in commandsWithArgs:
+			command = removeNewLineCharacters(command)
+			p(command)
+			callCommand(command)
+	with open(queuePath, "w") as commandQueue:
+		commandQueue.truncate(0)
+
+
+def processAllUsersCommands():
+	numberOfPlayers = len(sys.argv)
+	for i in range(1, numberOfPlayers):
+		playerName = sys.argv[i]
+		processCommandsFor(playerName)
+
+		
 def startTickSystem():
 	tick = 0
 	while(True):
 		time.sleep(TICK_INTERVAL_SEC)
 		p("tick ", tick)
-		tick+=1		
-		numberOfPlayers = len(sys.argv)
-		for i in range(1, numberOfPlayers):
-			playerName = sys.argv[i]
-			p("player: ", playerName)
-			queuePath = getQueuePathFromPlayerName(playerName)
-			with open(queuePath, "r") as commandQueue:
-				commandsWithArgs = commandQueue.readlines()
-				for command in commandsWithArgs:
-					command = removeNewLineCharacters(command)
-					p(command)
-					callCommand(command)
-			with open(queuePath, "w") as commandQueue:
-				commandQueue.truncate(0)
+		tick++
+		processAllUsersCommands()	
+	
 
 
 def main():
