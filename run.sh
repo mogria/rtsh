@@ -67,7 +67,7 @@ if [ -n "$RTSH_DEVELOP" ]; then
     # if $RTSH_DEVELOP is set, mount the code inside srv/ of this project into the docker container, not the prebuilt code in the image
     echo "mounting source directories into containers"
     SRV_DOCKER_OPTS="$SRV_DOCKER_OPTS -v $SOURCE_LOCATION/srv:/gamesrv:ro"
-    CLI_DOCKER_OPTS="$CLI_DOCKER_OPTS -v $SOURCE_LOCATION/wetty-cli/public:/app/public:ro"
+    CLI_DOCKER_OPTS="$CLI_DOCKER_OPTS -v $SOURCE_LOCATION/wetty-cli/public:/app/public:rw"
     DEFAULT_BIND_ADDRESS="127.0.0.1"
 
     # run bower install so client-side javascript dependencies can also be served from
