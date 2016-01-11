@@ -23,7 +23,6 @@ def p(*args):
 	text = ""
 	for i in args:
 		text += str(i)
-
 	print(text)
 	sys.stdout.flush()
 
@@ -32,29 +31,29 @@ def removeNewLineCharacters(s):
 		s = s[:-1]
 	return s
 
-
 def changeOwner(path, userName):
 	uid = pwd.getpwnam(userName).pw_uid
 	gid = pwd.getpwnam(userName).pw_gid
 	os.chown(path, uid, gid)
 
 
-def createPlayer(playerName):
-	p("trying to create player: ", playerName) 
-	result = subprocess.call(["/home/create-player.sh", playerName])
-	p(result)
-	wasSuccessfull = result == 0
-	p(wasSuccessfull)
-	if wasSuccessfull:
-		p("created player: ", playerName)
-	else:
-		p("player already available: ", playerName)
+
+
 
 
 def getQueuePathFromPlayerName(playerName):
 	playerDir = os.path.join("/home", playerName)
 	queuePath = os.path.join(playerDir, "command-queue")
 	return queuePath
+
+
+def createPlayer(playerName):
+	p("trying to create player: ", playerName) 
+	wasSuccessfull = subprocess.call(["/home/create-player.sh", playerName]) == 0
+	if wasSuccessfull:
+		p("created player: ", playerName)
+	else:
+		p("player already available: ", playerName)
 
 
 def createPipe(playerName):
@@ -73,23 +72,21 @@ def changeToLowerPriviledgedUser():
 	uid = pwd.getpwnam(USER_RTSHSRV).pw_uid
 	os.setuid(uid)
 	p(subprocess.check_output("whoami"))
-	p("changed user to " + USER_RTSHSRV)
+	p("changed user")
 
 
 def prepare():
 	numberOfPlayers = len(sys.argv)
 	for i in range(1, numberOfPlayers):
-
 		playerName = sys.argv[i]
 		p("player name: ", playerName)
-	
 		createPlayer(playerName)
-	
 		createPipe(playerName)
 
 	changeToLowerPriviledgedUser()
-
 	p("done with preparation")
+
+
 
 
 def callCommand(commandWithArgs):
@@ -99,11 +96,11 @@ def callCommand(commandWithArgs):
 
 
 def startTickSystem():
-	c = 0
+	tick = 0
 	while(True):
 		time.sleep(TICK_INTERVAL_SEC)
-		p("iteration ", c)
-		c+=1		
+		p("tick ", tick)
+		tick+=1		
 		numberOfPlayers = len(sys.argv)
 		for i in range(1, numberOfPlayers):
 			playerName = sys.argv[i]
@@ -122,11 +119,8 @@ def startTickSystem():
 def main():
 	p("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 	p("server: hello world, no just joking going to work now...")
-
 	prepare()
-
 	p("starting tick system now")
-	
 	startTickSystem()
 		
 
