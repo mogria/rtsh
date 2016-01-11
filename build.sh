@@ -6,11 +6,14 @@
 BUILD_ARGS=("$@")
 
 SOURCE_LOCATION="$(cd "$(dirname "$0")" && pwd)"
-. "$SOURCE_LOCATION/func.sh"
+cd "$SOURCE_LOCATION"
+
+. "./func.sh"
 
 build() {
     echo " * Building $1"
-    docker build -t "$1" "${BUILD_ARGS[@]}" "$SOURCE_LOCATION/$2"
+    echo " $ docker build -t" "$1" "${BUILD_ARGS[@]}" "./$2"
+    docker build -t "$1" "${BUILD_ARGS[@]}" "./$2"
 }
 
 build mogria/rtsh-srv srv && \
@@ -24,5 +27,4 @@ fi
 
 # build all worlds
 export -f build # export needed for xargs to find the build() function
-export SOURCE_LOCATION
 get_worlds | xargs -n1 -I '{}' bash -c "build 'mogria/rtsh-world-{}' 'worlds/{}'"
