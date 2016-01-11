@@ -60,19 +60,20 @@ if [ "$?" -ne 0 ]; then
 fi
 
 SRV_DOCKER_OPTS=
+DEFAULT_BIND_ADDRESS="$( [ -n "$RTSH_DEVELOP" ] && echo "127.0.0.1" || echo "0.0.0.0")"
 RTSH_PORT="${RTSH_PORT:-80}"
-CLI_DOCKER_OPTS="--detach --publish ${RTSH_BIND_ADDRESS:-0.0.0.0}:$RTSH_PORT:3000"
+CLI_DOCKER_OPTS="--detach --publish ${RTSH_BIND_ADDRESS:-$DEFAULT_BIND_ADDRESS}:$RTSH_PORT:3000"
 if [ -n "$RTSH_DEVELOP" ]; then
     # if $RTSH_DEVELOP is set, mount the code inside srv/ of this project into the docker container, not the prebuilt code in the image
     echo "mounting source directories into containers"
-    SRV_DOCKER_OPTS="-v $SOURCE_LOCATION/srv:/gamesrv:ro"
-    CLI_DOCKER_OPTS="--detach --publish ${RTSH_BIND_ADDRESS:-127.0.0.1}:$RTSH_PORT:3000 -v $SOURCE_LOCATION/wetty-cli/public:/app/public:ro"
+    SRV_DOCKER_OPTS="$SRV_DOCKER_OPTS -v $SOURCE_LOCATION/srv:/gamesrv:ro"
+    CLI_DOCKER_OPTS="$CLI_DOCKER_OPTS -v $SOURCE_LOCATION/wetty-cli/public:/app/public:ro"
 fi
 
 start_client() {
     echo " * starting the wetty client"
     # start the client
-    docker run \
+    docker run -it \
         $CLI_DOCKER_OPTS \
         --volumes-from "$WORLD_CONTAINER_NAME" \
         --name rtsh-wetty-cli \
@@ -82,7 +83,7 @@ start_client() {
 
 start_server() {
     echo " * starting the game server"
-    docker run \
+    docker run -it \
         $SRV_DOCKER_OPTS \
         --volumes-from "$WORLD_CONTAINER_NAME" \
         --name rtsh-srv \
