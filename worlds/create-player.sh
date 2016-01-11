@@ -21,7 +21,7 @@ NEWUID=9001
 # to register users. so this script can get these passwords.
 
 
-while cut -d: -f3 "/etc/passwd" | grep -E "^$NEWUID$"; do
+while cut -d: -f3 "/etc/passwd" | grep -E "^$NEWUID$" > /dev/null; do
     NEWUID="$((NEWUID + 1))"
 done
 
