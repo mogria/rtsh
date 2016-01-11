@@ -60,14 +60,21 @@ if [ "$?" -ne 0 ]; then
 fi
 
 SRV_DOCKER_OPTS=
-DEFAULT_BIND_ADDRESS="$( [ -n "$RTSH_DEVELOP" ] && echo "127.0.0.1" || echo "0.0.0.0")"
+DEFAULT_BIND_ADDRESS="0.0.0.0"
 RTSH_PORT="${RTSH_PORT:-80}"
-CLI_DOCKER_OPTS="--detach --publish ${RTSH_BIND_ADDRESS:-$DEFAULT_BIND_ADDRESS}:$RTSH_PORT:3000"
+CLI_DOCKER_OPTS="--detach"
 if [ -n "$RTSH_DEVELOP" ]; then
     # if $RTSH_DEVELOP is set, mount the code inside srv/ of this project into the docker container, not the prebuilt code in the image
     echo "mounting source directories into containers"
     SRV_DOCKER_OPTS="$SRV_DOCKER_OPTS -v $SOURCE_LOCATION/srv:/gamesrv:ro"
     CLI_DOCKER_OPTS="$CLI_DOCKER_OPTS -v $SOURCE_LOCATION/wetty-cli/public:/app/public:ro"
+    DEFAULT_BIND_ADDRESS="127.0.0.1"
+
+    # run bower install so client-side javascript dependencies can also be served from
+    # the host filesystem (you need bower installed for this) TODO: maybe use a docker container for this?
+    echo "running 'bower install'"
+    ( cd "$SOURCE_LOCATION/wetty-cli"; bower install )
+
     # fix permissions for srv/commands
     chmod -R 755 $SOURCE_LOCATION/srv/commands
 fi
@@ -77,6 +84,7 @@ start_client() {
     # start the client
     docker run -it \
         $CLI_DOCKER_OPTS \
+        --publish ${RTSH_BIND_ADDRESS:-$DEFAULT_BIND_ADDRESS}:$RTSH_PORT:3000 \
         --volumes-from "$WORLD_CONTAINER_NAME" \
         --name rtsh-wetty-cli \
         --hostname "$WORLD" \
