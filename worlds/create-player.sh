@@ -7,9 +7,11 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-CREATE_HOME="--create-home"
+CREATE_HOME=1
+CREATE_HOME_OPT="--create-home"
 if [ "$1" == "-n" ]; then
-    CREATE_HOME="-M"
+    CREATE_HOME=0
+    CREATE_HOME_OPT="-M"
     shift
 fi
 
@@ -24,7 +26,7 @@ while cut -d: -f3 "/etc/passwd" | grep -E "^$NEWUID$"; do
 done
 
 useradd --password "*" \
-        $CREATE_HOME \
+        $CREATE_HOME_OPT \
         --uid "$NEWUID" \
         --home-dir "/home/$1" \
         --groups rtshplayers \
@@ -37,16 +39,18 @@ if [ "$useradd_exit" -eq 0 ]; then
     # set rtsh as password
     echo "$1:rtsh" | chpasswd
 
-    # create basic layout of home directory
-    cd "/home/$1"
-    mkdir units/
-    mkdir buildings/
+    if [ 1 -eq "$CREATE_HOME" ]; then
+        # create basic layout of home directory
+        cd "/home/$1"
+        mkdir units/
+        mkdir buildings/
 
-    chown -R rtshsrv:rtshplayers units/
-    chown -R rtshsrv:rtshplayers buildings/
+        chown -R rtshsrv:rtshplayers units/
+        chown -R rtshsrv:rtshplayers buildings/
 
-    chmod 750 units/
-    chmod 750 buildings/
+        chmod 750 units/
+        chmod 750 buildings/
+    fi
 fi
 
 # exit code is used by the python server
