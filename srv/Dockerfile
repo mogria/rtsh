@@ -1,6 +1,7 @@
 FROM python
 MAINTAINER "Mogria <m0gr14@gmail.com>"
 
+RUN apt-get update; apt-get install jq
 
 RUN groupadd --gid 1312 rtshplayers && \
     useradd --uid 1337 rtshsrv 
