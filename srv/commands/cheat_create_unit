@@ -2,7 +2,7 @@
 
 # ***************************************
 # args are:
-# 1: unit type (swordfighter, ..)
+# 1: unit type (swordFighter, ..)
 # 2: x coordinate
 # 3: y coordinate
 # ***************************************
@@ -40,7 +40,7 @@ new_unit() {
 }
 
 
-UNIT_TYPES=("swordfighter")
+UNIT_TYPES=("swordFighter")
 if [ "$#" -ne 3 ]; then
     echo "usage: $0 unitType ($UNIT_TYPES) x y ";
     exit 0
@@ -55,7 +55,7 @@ Y=$3
 echo "you cheater you .."
 echo "i am '" $CMD_NAME "' and i was called with the args: '" $ARGS "'"
 
-new_unit $UNIT_TYPE > "/world/$X/$Y/unit-$UNIT_TYPE.json"
+new_unit $UNIT_TYPE > "/world/$X/$Y/units/unit-$UNIT_TYPE.json"
 
 
 
