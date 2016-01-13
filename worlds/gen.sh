@@ -11,12 +11,15 @@ fi
 WORLDNAME="$1"
 SIZEX="$2"
 SIZEY="$3"
-TERRAIN_GENERATOR="${4:-random}"
+PLAYERS="$4"
+PLAYER_COORDS=( "${@:5:$((PLAYERS * 2))}" )
+shift "${#PLAYER_COORDS[@]}"
+TERRAIN_GENERATOR="${5:-random}"
 SEED="$RANDOM"
 
 echo "Generating world (${SIZEX}x$SIZEY) with '$TERRAIN_GENERATOR' generator (seed: $SEED) ..."
 
-new_world "$WORLDNAME" "$SIZEX" "$SIZEY" "$TERRAIN_GENERATOR" "$SEED" > world.json
+new_world "$WORLDNAME" "$SIZEX" "$SIZEY" "$PLAYERS" "${PLAYER_COORDS[@]}" "$TERRAIN_GENERATOR" "$SEED" > world.json
 
 for ((y = 0; y < SIZEY; y++)); do
     for ((x = 0; x < SIZEX; x++)); do

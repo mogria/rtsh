@@ -3,7 +3,8 @@ FROM mogria/rtsh-base-world
 MAINTAINER "Mogria <m0gr14@gmail.com>"
 
 WORKDIR /world
-RUN cd /world && gen basic 8 8 && \
+# map of size 8x8, with two players, starting top left and bottom right
+RUN cd /world && gen basic 8 8 2 1 1 6 6&& \
     chown -R rtshsrv:rtshsrv . && \
     chmod -R g-w . && \
     cat world.json && pwd && ls -l
