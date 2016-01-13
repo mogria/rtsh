@@ -15,8 +15,7 @@ containsElement() {
 }
 
 set_attr_str() {
-    echo "\"$1\": \"$2\","
-#    jq --arg attr "$2" ".$1 = \$attr"
+    jq --arg attr "$2" ".$1 = \$attr"
 }
 
 new() {
@@ -26,7 +25,7 @@ new() {
 
     CLASSES=( "tile"  "world" "unit" "building" )
     if containsElement "$1" "${CLASSES[@]}"; then
-        set_attr_str "class" "$1"
+        echo '{}' | set_attr_str class "$1"
         return 0
     fi
     return 1
@@ -34,10 +33,7 @@ new() {
 
 new_unit() {
     if containsElement "$UNIT_TYPE" "${UNIT_TYPES[@]}"; then
-        echo "{"
-        new "unit"
-        set_attr_str "type" "$UNIT_TYPE"
-        echo "}"
+        new "unit" | set_attr_str type "$UNIT_TYPE"
         return 0
     fi
     return 1
