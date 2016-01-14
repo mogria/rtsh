@@ -2,12 +2,12 @@
 
 These commands are provided within the docker container and can be used to control your units and buildings. Every commands is issued to the Game Server and evaluated on the next tick.
 
-## `move [-q] $y/$x $UNITS...`
+## `move [-q] $x/$y $UNITS...`
 
 Move a unit to a specific location.
 If `-q` is given queue up the command in the unit's command queue. if `-q` is not given all the current commands in the queue are discarded.
 
-## `build [-q] $BUILDINGNAME [$y/$x] $BUILDERUNITS...`
+## `build [-q] $BUILDINGNAME [$x/$y] $BUILDERUNITS...`
 
 Build a building on a specific location with a specific builder unit.
 If `-q` is given queue up the command in the builderunit's command queue. if `-q` is not given all the current commands in the queue are discarded.
@@ -62,6 +62,6 @@ Filter through game objects (unit, buildings, tiles, ...?), make sure they're in
 
 This command either takes 1 or two positional arguments.
 
- * If `1` positional arguments are given in the form of `$y/$x`, only the tile at this exact coordinate is searched
- * If `2` positional arguments are given in the form of `$y1/$x1 $y2/$x2`, the rectangular area between
+ * If `1` positional arguments are given in the form of `$x/$y`, only the tile at this exact coordinate is searched
+ * If `2` positional arguments are given in the form of `$x1/$y1 $x2/$y2`, the rectangular area between
    these coordinates (the coordinates themselves included) are searched
