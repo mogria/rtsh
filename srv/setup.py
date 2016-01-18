@@ -10,6 +10,8 @@ setup(
     url = 'https://github.com/mogria/rtsh',
 
     packages = find_packages(),
-    scripts = ['srv.py']
+    scripts = ['srv.py'],
+    install_requires = [
+    ]
 )
 
