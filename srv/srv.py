@@ -13,6 +13,9 @@ import time
 import stat
 import shutil
 
+sys.path.insert(0, '/gamesrv/commands')
+import commandFactory 
+
 
 TICK_INTERVAL_SEC = 1
 USER_RTSHSRV = "rtshsrv"
@@ -82,9 +85,16 @@ def prepare():
 
 
 def callCommand(commandWithArgs):
-	pathToCommands = "/gamesrv/commands"
-	fullPath = os.path.join(pathToCommands, commandWithArgs)
-	p(os.system(fullPath))
+	splitter = commandWithArgs.split(" ")
+	cmdName = splitter[0]
+	cmdArgs = splitter[1:]
+	try:
+		cmdClass = commandFactory.createCommandClass(cmdName, *cmdArgs)
+		cmdClass.execute()
+	except commandFactory.InvalidGameCommandError as e:
+		pathToCommands = "/gamesrv/commands"
+		fullPath = os.path.join(pathToCommands, commandWithArgs)
+		p(os.system(fullPath))
 
 
 def processCommandsFor(playerName):
