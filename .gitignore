@@ -7,3 +7,7 @@
 
 #sub repository
 wetty-cli
+
+#python build directory
+srv/build
+srv/rtsh.srv.egg-info
