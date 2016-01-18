@@ -18,7 +18,7 @@ build() {
 
 build mogria/rtsh-srv srv && \
 build mogria/rtsh-wetty-cli wetty-cli/ && \
-build mogria/rtsh-base-world worlds/
+build mogria/rtsh-base-world "srv/lib"
 
 if [ "$?" -ne 0 ]; then
     echo "E: build failed"
@@ -27,4 +27,4 @@ fi
 
 # build all worlds
 export -f build # export needed for xargs to find the build() function
-get_worlds | xargs -n1 -I '{}' bash -c "build 'mogria/rtsh-world-{}' 'worlds/{}'"
+get_worlds | xargs -n1 -I '{}' bash -c "build 'mogria/rtsh-world-{}' '$WORLDS_DIR/{}'"

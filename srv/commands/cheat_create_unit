@@ -7,40 +7,8 @@
 # 3: y coordinate
 # ***************************************
 
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/gameobjects.sh"
 
-containsElement() {
-    local e
-    for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
-    return 1
-}
-
-set_attr_str() {
-    jq --arg attr "$2" ".$1 = \$attr"
-}
-
-new() {
-    if [ "$#" -ne 1 ]; then
-        return 1
-    fi
-
-    CLASSES=( "tile"  "world" "unit" "building" )
-    if containsElement "$1" "${CLASSES[@]}"; then
-        echo '{}' | set_attr_str class "$1"
-        return 0
-    fi
-    return 1
-}
-
-new_unit() {
-    if containsElement "$UNIT_TYPE" "${UNIT_TYPES[@]}"; then
-        new "unit" | set_attr_str type "$UNIT_TYPE"
-        return 0
-    fi
-    return 1
-}
-
-
-UNIT_TYPES=("swordFighter")
 if [ "$#" -ne 3 ]; then
     echo "usage: $0 unitType ($UNIT_TYPES) x y ";
     exit 0

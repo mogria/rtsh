@@ -10,6 +10,9 @@ RUN apt-get update && \
     apt-get purge -y wget
 
 ADD create-player.sh /home/create-player.sh
+ADD array.sh /usr/bin/array.sh
+ADD json.sh /usr/bin/json.sh
+ADD gameobjects.sh /usr/bin/gameobjects.sh
 ADD genfunc.sh /usr/bin/genfunc.sh
 ADD gen.sh /usr/bin/gen
 

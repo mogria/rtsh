@@ -1,24 +1,7 @@
 #!/bin/bash
 
-containsElement() {
-    local e
-    for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
-    return 1
-}
-
-join() {
-    local IFS="$1"
-    shift
-    echo "$*"
-}
-
-set_attr_str() {
-    jq --arg attr "$2" ".$1 = \$attr"
-}
-
-set_attr() {
-    jq --argjson attr "$2" ".$1 = \$attr"
-}
+source "$(dirname "${BASH_SOURCE[0]}")/array.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/json.sh"
 
 new() {
     if [ "$#" -ne 1 ]; then
@@ -69,9 +52,12 @@ new_world() {
     echo "$output"
 }
 
-TERRAIN_TYPES=("grass" "desert" "woods" "plain")
+UNIT_TYPES=("swordFighter")
 
-terrain_generator_random() {
-    terrain="${TERRAIN_TYPES[ $RANDOM % ${#TERRAIN_TYPES[@]} ] }"
-    echo -n "$terrain"
+new_unit() {
+    if containsElement "$UNIT_TYPE" "${UNIT_TYPES[@]}"; then
+        new "unit" | set_attr_str type "$UNIT_TYPE"
+        return 0
+    fi
+    return 1
 }
