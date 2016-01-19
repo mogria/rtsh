@@ -20,6 +20,9 @@
 #   The port on which the rtsh-wetty-cli container should listen to
 #   on the host part (default `80`)
 
+echo "rtsh version 0.1, Copyright (C) 2016 by wtjerry, mogria, che4ter"
+echo "rtsh comes with ABSOLUTELY NO WARRANTY; This is free software,"
+echo "and you are welcome to redistribute it under certain conditions"
 
 SOURCE_LOCATION="$(cd "$(dirname "$0")" && pwd)"
 . "$SOURCE_LOCATION/func.sh"
