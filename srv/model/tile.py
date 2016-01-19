@@ -1,7 +1,8 @@
-from gameobject import GameObject
+from model.gameobject import GameObject
 
 class Tile(GameObject):
     def __init__(self, terrain = "none", position = [-1, -1]):
+        super(Tile, self).__init__("tile")
         self._terrain = terrain
         self._position = position
 
