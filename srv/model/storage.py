@@ -59,5 +59,5 @@ class Storage(object):
             json_properties = filterproperties(obj)
             json_properties["class"] = json_properties["classname"]
             del json_properties["classname"]
-            json.dump(json_properties, f, indent=True)
+            json.dump(json_properties, f, indent=4)
 
