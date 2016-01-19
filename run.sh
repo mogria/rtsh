@@ -42,10 +42,8 @@ shift
 PLAYERS=("$@")
 
 # stop & remove previous instances if running
-docker stop rtsh-srv 2> /dev/null
-docker stop rtsh-wetty-cli 2> /dev/null
-docker rm rtsh-srv 2> /dev/null
-docker rm rtsh-wetty-cli 2> /dev/null
+docker stop --time 1 rtsh-srv rtsh-wetty-cli 2> /dev/null
+docker rm rtsh-srv rtsh-wetty-cli 2> /dev/null
 
 WORLD_CONTAINER_NAME="rtsh-world-$WORLD-$(date '+%Y-%m-%d_%H%M%S')"
 
