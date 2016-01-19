@@ -1,3 +1,4 @@
+from abc import ABCMeta, abstractmethod
 
 class GameObject(object):
     def __init__(self, classname):
@@ -7,3 +8,6 @@ class GameObject(object):
     def classname(self):
         return self._classname
 
+    @abstractmethod
+    def storage_location(self):
+        pass
