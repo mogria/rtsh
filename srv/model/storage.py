@@ -1,8 +1,8 @@
 import json
 import inspect
 from model.tile import Tile
+from model.world import World
 from model.gameobject import GameObject
-from pprint import pprint
 
 class InvalidGameObectError(Exception):
     def __init__(self, file, message, inner_exception = None):
@@ -28,7 +28,7 @@ class Storage(object):
         'unit': None,
         'building': None,
         'tile': Tile,
-        'world': None,
+        'world': World,
     }
 
     def __init__(self, filename):
