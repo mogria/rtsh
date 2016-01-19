@@ -1,4 +1,5 @@
 from baseCommand import BaseCommand
+from model.storage import Storage
 
 class CheatCreateUnitCommand(BaseCommand):
 
@@ -11,6 +12,9 @@ class CheatCreateUnitCommand(BaseCommand):
 	def execute(self):
 		super().execute()
 		print("pretending to doing stuff...")
+		#s = Storage(correctStorageHere)
+		#u = Unit...
+		#s.write(u)
 	
 	@classmethod
 	def isValid(cls, args):

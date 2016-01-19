@@ -7,4 +7,4 @@ RUN easy_install nose
 
 VOLUME ["gamesrv"]
 
-ENTRYPOINT ["nosetests", "--exe"]
+ENTRYPOINT ["nosetests", "--exe", "-s"]
