@@ -1,2 +1,7 @@
 lib/Dockerfile
 lib/worlds
+__pycache__
+.cache
+*.pyc
+*.pyo
+rtsh.srv.egg-info

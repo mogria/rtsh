@@ -1,7 +1,8 @@
 import json
 import inspect
-from tile import Tile
-from gameobject import GameObject
+from model.tile import Tile
+from model.world import World
+from model.gameobject import GameObject
 
 class InvalidGameObectError(Exception):
     def __init__(self, file, message, inner_exception = None):
@@ -13,13 +14,10 @@ def getproperties(obj):
     """returns all the @property annotated properties of an object """
     return [k for k,v in inspect.getmembers(obj.__class__, lambda x: isinstance(x, property))]
 
-def filterdict(dict, included_keys):
-    """only return certain keys of a dictionary"""
-    return {k: dict[k] for k in dict if k in included_keys}
-
 def filterobject(obj, included_properties):
     """only return certain properties of an object"""
-    return filterdict(obj.__dict__, included_properties)
+    dictionary = dir(obj)
+    return {k: getattr(obj, k) for k in dictionary if k in included_properties}
 
 def filterproperties(obj):
     """get a dictionary of an object with only @property annotated properies"""
@@ -30,7 +28,7 @@ class Storage(object):
         'unit': None,
         'building': None,
         'tile': Tile,
-        'world': None,
+        'world': World,
     }
 
     def __init__(self, filename):
@@ -43,16 +41,15 @@ class Storage(object):
                 result = json.load(f) 
             except ValueError as e:
                 raise InvalidGameObjectError(f, "couldn't parse game object file", e)
-        if not "classname" in result:
+        if not "class" in result:
             raise InvalidGameObjectError(f, "no 'class' indicator found, can't handle this game object")
 
-        result["classname"] = result["class"]
-        del result["class"]
-
-        if not result["class"] in game_object_classes:
+        if not result["class"] in Storage.game_object_classes:
             raise InvalidGameObjectError(f, "invalid 'class' indicator '" + result["class"] + "'. No known classtype.")
 
-        return game_object_classes[result["class"]](**result)
+        game_object_class = Storage.game_object_classes[result["class"]]
+        del result["class"]
+        return game_object_class(**result)
 
     def write(self, obj):
         if not isinstance(obj, GameObject):
@@ -62,5 +59,5 @@ class Storage(object):
             json_properties = filterproperties(obj)
             json_properties["class"] = json_properties["classname"]
             del json_properties["classname"]
-            json.dump(json_properties, f, indent=True)
+            json.dump(json_properties, f, indent=4)
 
