@@ -31,12 +31,22 @@ class Storage(object):
         'world': World,
     }
 
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, obj_or_filename):
+        if isinstance(obj_or_filename, GameObject):
+            self._filename = obj_or_filename.storage_location()
+        else:
+            self._filename = obj_or_filename
+
+    def __enter__(self):
+       self._obj = self.read()
+       return self._obj
+
+    def __exit__(self, type, value, traceback):
+       self.write(self._obj)
 
     def read(self):
         result = {}
-        with open(self.filename, "r") as f:
+        with open(self._filename, "r") as f:
             try:
                 result = json.load(f) 
             except ValueError as e:
@@ -55,7 +65,7 @@ class Storage(object):
         if not isinstance(obj, GameObject):
             raise ValueError("only GameObject and it's subtypes can be written by GameObjectPersistence")
 
-        with open(self.filename, "w") as f:
+        with open(self._filename, "w") as f:
             json_properties = filterproperties(obj)
             json_properties["class"] = json_properties["classname"]
             del json_properties["classname"]

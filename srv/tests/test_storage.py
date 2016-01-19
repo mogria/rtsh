@@ -6,9 +6,17 @@ from model.world import World
 
 class StorageTest(unittest.TestCase):
     def setUp(self):
-        self.storage = Storage(tempfile.mkstemp()[1])
+        self.tempfile = tempfile.mkstemp()[1]
+        self.storage = Storage(self.tempfile)
         self.tile = Tile("grass", [1, 2])
         self.world = World("name", [7, 8], 2, [[1, 1], [6, 6]])
+
+    def test_initialisation_by_object(self):
+        tile = Tile("grass", [0, 0])
+        storage = Storage(tile)
+        storage.write(tile)
+        tile2 = storage.read()
+        self.assertEquals("grass", tile2.terrain())
 
     def test_write_tile(self):
         self.storage.write(self.tile)
@@ -28,3 +36,12 @@ class StorageTest(unittest.TestCase):
         self.assertEquals(new_world.name, self.world.name)
         self.assertEquals(new_world.size, self.world.size)
         self.assertEquals(new_world.num_players, self.world.num_players)
+
+    def test_with_statement(self):
+        t1 = Tile("grass", (0, 0))
+        self.storage.write(t1)
+        with Storage(self.tempfile) as tile:
+            tile._terrain = "plain"
+        t2 = self.storage.read()
+        self.assertEquals("plain", t2.terrain)
+        self.assertEquals(t1.position, t2.position)
