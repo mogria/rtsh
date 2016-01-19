@@ -14,3 +14,4 @@ srv/rtsh.srv.egg-info
 __pycache__
 # nosetests
 .cache
+.idea
