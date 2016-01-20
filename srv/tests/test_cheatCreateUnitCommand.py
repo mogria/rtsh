@@ -31,7 +31,7 @@ class CheatCreateUnitCommandTest(unittest.TestCase):
         sut = CheatCreateUnitCommand(*args)
         sut.execute()
 
-        unitFactoryMock.assert_called_once_with("swordfighter", position=(2, 3))
+        unitFactoryMock.assert_called_once_with("swordfighter", owner="foo", position=(2, 3))
         storageMock.write.assert_called_once_with(unitMock)
 
 

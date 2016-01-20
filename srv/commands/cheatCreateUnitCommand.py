@@ -1,6 +1,5 @@
 from commands.baseCommand import BaseCommand
 from model.storage import Storage
-#import model.idgen
 import model.unitfactory
 from model.unitfactory import UnitFactory
 
@@ -9,13 +8,13 @@ class CheatCreateUnitCommand(BaseCommand):
     def __init__(self, unitType, x, y):
         super().__init__("CheatCreateUnit")
         self._unitType = unitType
-        self._x = x
-        self._y = y
+        self._x = int(x)
+        self._y = int(y)
 
     def execute(self):
         super().execute()
 
-        u = UnitFactory(self._unitType, position=(self._x, self._y))
+        u = UnitFactory(self._unitType, owner="foo", position=(self._x, self._y))
         path = u.storage_location()
         s = Storage(path)
         s.write(u)
