@@ -33,3 +33,6 @@ class World(GameObject):
     @property
     def seed(self):
         return self._seed
+
+    def storage_location(self):
+        return "/world/world.json"

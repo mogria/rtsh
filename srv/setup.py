@@ -12,6 +12,8 @@ setup(
     packages = find_packages(),
     scripts = ['srv.py'],
     install_requires = [
+        'numpy',
+        'fake-factory'
     ]
 )
 

@@ -17,7 +17,7 @@ class StorageTest(unittest.TestCase):
         storage = Storage(tile)
         storage.write(tile)
         tile2 = storage.read()
-        self.assertEquals("grass", tile2.terrain())
+        self.assertEquals("grass", tile2.terrain)
 
     def test_write_tile(self):
         self.storage.write(self.tile)

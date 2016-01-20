@@ -1,8 +1,10 @@
+import os
 import json
 import inspect
 from model.tile import Tile
 from model.world import World
 from model.gameobject import GameObject
+from model.unitfactory import UnitFactory
 
 class InvalidGameObectError(Exception):
     def __init__(self, file, message, inner_exception = None):
@@ -25,7 +27,7 @@ def filterproperties(obj):
 
 class Storage(object):
     game_object_classes = {
-        'unit': None,
+        'unit': UnitFactory,
         'building': None,
         'tile': Tile,
         'world': World,
@@ -64,6 +66,11 @@ class Storage(object):
     def write(self, obj):
         if not isinstance(obj, GameObject):
             raise ValueError("only GameObject and it's subtypes can be written by GameObjectPersistence")
+
+        # make sure the directory for the file exists
+        directory = os.path.dirname(self._filename)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
         with open(self._filename, "w") as f:
             json_properties = filterproperties(obj)

@@ -1,10 +1,14 @@
 FROM mogria/rtsh-srv:latest
 
 WORKDIR /gamesrv
+ADD setup.py /gamesrv
 RUN ls -al /gamesrv
 RUN python setup.py develop
 RUN easy_install nose
 
-VOLUME ["gamesrv"]
+VOLUME ["/gamesrv"]
 
-ENTRYPOINT ["nosetests", "--exe", "-s"]
+# run nosetests with the following options:
+# - consider file which have the executable flag set
+# - don't buffer stdout
+ENTRYPOINT ["nosetests", "--exe", "--nocapture"]
