@@ -16,7 +16,7 @@ class SquireUnit(Unit, Builder, Attacker):
         kwargs['attack_range'] = 0
         kwargs['damage'] = 13
 
-        super(SquireUNit, self).__init__(*args, **kwargs)
+        super(SquireUnit, self).__init__(*args, **kwargs)
 
     def give_name(self):
         return _fake.first_name() + " the Squire"

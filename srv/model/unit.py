@@ -10,7 +10,7 @@ def isbuilder(unit):
     return isinstance(unit, Builder)
 
 def isfighter(unit):
-    return isinstance(unit, Fighter)
+    return isinstance(unit, Attacker)
 
 class Unit(GameObject, Destroyable, Moveable, Nameable):
     def __init__(self, unit_id=-1, owner = "none", unit_type = "none", *args, **kwargs):
