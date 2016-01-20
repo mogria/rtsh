@@ -10,6 +10,8 @@ class AttackerTest(unittest.TestCase):
         self.destroyable = Destroyable(health = 1000, armor_type = 'normal')
         self.destroyable.get_attacked = MagicMock()
 
+        self.attacker.randomized_damage = MagicMock(return_value = 21)
+
     def test_invalid_attack_type(self):
         self.assertRaises(ValueError, Attacker, damage = 10, attack_type = 'something?')
 
@@ -27,11 +29,7 @@ class AttackerTest(unittest.TestCase):
 
         # this time the destroyable will actually get attacked
         self.attacker.attack(self.destroyable)
-        self.assertEquals(1, self.destroyable.get_attacked.call_count)
-        args = self.destroyable.get_attacked.call_args[0]
-        self.assertGreaterEqual(22, args[0])
-        self.assertLessEqual(18, args[0])
-        self.assertEquals('pierce', args[1])
+        self.destroyable.get_attacked.assert_called_once_with(21, 'pierce')
 
         # now it shouldn't get attacked again
         self.attacker.attack(self.destroyable)
@@ -41,3 +39,9 @@ class AttackerTest(unittest.TestCase):
         self.attacker.attack(self.destroyable)
         self.assertEquals(2, self.destroyable.get_attacked.call_count)
 
+    def test_randomized_damage(self):
+        for x in range(100):
+            attacker = Attacker(damage = 1000, attack_type = 'normal')
+            randomized_damage = attacker.randomized_damage()
+            self.assertGreaterEqual(1100, randomized_damage)
+            self.assertLessEqual(900, randomized_damage)

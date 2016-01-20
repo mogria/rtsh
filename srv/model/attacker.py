@@ -47,6 +47,12 @@ class Attacker(object):
     def attack(self, attacked_destroyable):
         self._attack_cycle -= 1
         if self._attack_cycle <= 0:
-            rngdamage = round(self.damage * random.gauss(1.0, 0.05))
-            attacked_destroyable.get_attacked(rngdamage, self.attack_type)
+            attack_damage = self.randomized_damage()
+            attacked_destroyable.get_attacked(attack_damage, self.attack_type)
+            # only reset attack cycle after we've actually attacked
             self.reset_attack_cycle()
+        else:
+            self._attack_cycle -= 1
+
+    def randomized_damage(self):
+        return round(self.damage * random.uniform(0.9, 1.1))
