@@ -11,6 +11,7 @@ setup(
 
     packages = find_packages(),
     scripts = ['srv.py'],
+    license = 'GPLv2+',
     install_requires = [
         'numpy',
         'fake-factory'
