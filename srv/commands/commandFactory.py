@@ -1,5 +1,5 @@
-from invalidGameCommandError import InvalidGameCommandError
-from cheatCreateUnitCommand import CheatCreateUnitCommand
+from commands.invalidGameCommandError import InvalidGameCommandError
+from commands.cheatCreateUnitCommand import CheatCreateUnitCommand
 
 def createCommandClass(cmdName, cmdArgs):
 

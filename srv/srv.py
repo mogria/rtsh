@@ -12,10 +12,11 @@ import subprocess
 import time
 import stat
 import shutil
+import glob
 
-sys.path.insert(0, '/gamesrv/commands')
-import commandFactory
-from invalidGameCommandError import InvalidGameCommandError 
+import commands.commandFactory
+from commands.invalidGameCommandError import InvalidGameCommandError
+from model.storage import Storage
 
 
 TICK_INTERVAL_SEC = 1
@@ -117,6 +118,22 @@ def processAllUsersCommands():
 		playerName = sys.argv[i]
 		processCommandsFor(playerName)
 
+
+def getAllUnits():
+	units = []
+	for unitFile in glob.glob("/world/**/unit*.json", recursive=True):
+		s = Storage(unitFile)
+		u = s.read()
+		units.append(u)
+	return units
+
+
+def moveUnits():
+	pass
+	units = getAllUnits()
+	for u in units:
+		u.move()
+
 		
 def startTickSystem():
 	tick = 0
@@ -124,7 +141,8 @@ def startTickSystem():
 		time.sleep(TICK_INTERVAL_SEC)
 		p("tick ", tick)
 		tick += 1
-		processAllUsersCommands()	
+		processAllUsersCommands()
+		moveUnits()
 	
 
 

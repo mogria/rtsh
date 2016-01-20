@@ -1,4 +1,4 @@
-from baseCommand import BaseCommand
+from commands.baseCommand import BaseCommand
 from model.storage import Storage
 
 class CheatCreateUnitCommand(BaseCommand):

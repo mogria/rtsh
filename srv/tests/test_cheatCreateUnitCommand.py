@@ -1,13 +1,10 @@
 import unittest
-import sys
 from unittest.mock import MagicMock
 from unittest.mock import ANY
 from unittest.mock import patch
 
-sys.path.insert(0, '/gamesrv/commands')
-sys.path.insert(0, '/gamesrv/model')
-from cheatCreateUnitCommand import CheatCreateUnitCommand
-from storage import Storage
+from commands.cheatCreateUnitCommand import CheatCreateUnitCommand
+from model.storage import Storage
 
 class CheatCreateUnitCommandTest(unittest.TestCase):
 
@@ -23,7 +20,7 @@ class CheatCreateUnitCommandTest(unittest.TestCase):
 		result = CheatCreateUnitCommand.isValid(only2Args)
 		self.assertEqual(expected, result)
 
-	@patch("cheatCreateUnitCommand.Storage")
+	@patch("commands.cheatCreateUnitCommand.Storage")
 	def test_execute_callsStorageWrite(self, storageClassMock):
 		m = MagicMock()
 		storageClassMock.return_value = m
