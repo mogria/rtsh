@@ -5,6 +5,7 @@ from model.tile import Tile
 from model.world import World
 
 class StorageTest(unittest.TestCase):
+
     def setUp(self):
         self.tempfile = tempfile.mkstemp()[1]
         self.storage = Storage(self.tempfile)

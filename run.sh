@@ -20,6 +20,9 @@
 #   The port on which the rtsh-wetty-cli container should listen to
 #   on the host part (default `80`)
 
+echo "rtsh version 0.1, Copyright (C) 2016 by wtjerry, mogria, che4ter"
+echo "rtsh comes with ABSOLUTELY NO WARRANTY; This is free software,"
+echo "and you are welcome to redistribute it under certain conditions"
 
 SOURCE_LOCATION="$(cd "$(dirname "$0")" && pwd)"
 . "$SOURCE_LOCATION/func.sh"
@@ -39,10 +42,8 @@ shift
 PLAYERS=("$@")
 
 # stop & remove previous instances if running
-docker stop rtsh-srv 2> /dev/null
-docker stop rtsh-wetty-cli 2> /dev/null
-docker rm rtsh-srv 2> /dev/null
-docker rm rtsh-wetty-cli 2> /dev/null
+docker stop --time 1 rtsh-srv rtsh-wetty-cli 2> /dev/null
+docker rm rtsh-srv rtsh-wetty-cli 2> /dev/null
 
 WORLD_CONTAINER_NAME="rtsh-world-$WORLD-$(date '+%Y-%m-%d_%H%M%S')"
 

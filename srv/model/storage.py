@@ -11,7 +11,7 @@ class InvalidGameObectError(Exception):
         self.inner_exception = inner_exception
 
 def getproperties(obj):
-    """returns all the @property annotated properties of an object """
+    """returns all the @property annotated properties of an object"""
     return [k for k,v in inspect.getmembers(obj.__class__, lambda x: isinstance(x, property))]
 
 def filterobject(obj, included_properties):
@@ -20,7 +20,7 @@ def filterobject(obj, included_properties):
     return {k: getattr(obj, k) for k in dictionary if k in included_properties}
 
 def filterproperties(obj):
-    """get a dictionary of an object with only @property annotated properies"""
+    """get a dictionary of an object with only @property annotated properties"""
     return filterobject(obj, getproperties(obj))
 
 class Storage(object):
