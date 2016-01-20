@@ -1,9 +1,6 @@
 FROM mogria/rtsh-srv:latest
 
 WORKDIR /gamesrv
-ADD setup.py /gamesrv
-RUN ls -al /gamesrv
-RUN python setup.py develop
 RUN easy_install nose
 
 VOLUME ["/gamesrv"]
