@@ -19,8 +19,8 @@ class UnitConstructionError(Exception):
 
 def UnitFactory(unit_type = "none",  *args, **kwargs):
     if not unit_type in UNIT_TYPES:
-        raise UnitConstructionError("no such unit type")
+        raise UnitConstructionError(unit_type, "no such unit type")
     unit_class = UNIT_TYPES[unit_type]
     if unit_class == None:
-        raise UnitConstructionError("unit not yet implemented")
+        raise UnitConstructionError(unit_type, "unit not yet implemented")
     return unit_class(*args, **kwargs)

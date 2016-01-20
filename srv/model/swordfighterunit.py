@@ -16,4 +16,4 @@ class SwordfighterUnit(Unit, Attacker):
         super(SwordfighterUnit, self).__init__(*args, **kwargs)
 
     def give_name(self):
-        return _fake.name() + " of " + _fake.city()
+        return self._fake.name() + " of " + self._fake.city()
