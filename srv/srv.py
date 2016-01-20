@@ -14,7 +14,7 @@ import stat
 import shutil
 import glob
 
-import commands.commandFactory
+from commands.commandFactory import createCommandClass
 from commands.invalidGameCommandError import InvalidGameCommandError
 from model.storage import Storage
 
@@ -91,7 +91,7 @@ def callCommand(commandWithArgs):
 	cmdName = splitter[0]
 	cmdArgs = splitter[1:]
 	try:
-		cmdClass = commandFactory.createCommandClass(cmdName, cmdArgs)
+		cmdClass = createCommandClass(cmdName, cmdArgs)
 		cmdClass.execute()
 	except InvalidGameCommandError as e:
 		pathToCommands = "/gamesrv/commands"
