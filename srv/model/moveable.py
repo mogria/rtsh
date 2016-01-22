@@ -45,7 +45,7 @@ class Moveable(Positionable):
                 self.reset_move_cycle()
             else:
                 # reset move target
-                move_target = None
+                self._move_target = None
         else:
             self._move_cycle -= 1
 
