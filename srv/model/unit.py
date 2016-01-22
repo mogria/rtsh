@@ -32,4 +32,4 @@ class Unit(GameObject, Destroyable, Moveable, Nameable):
         return self._unit_type
 
     def storage_location(self):
-        return "/home/{0}/units/unit-{1}.json".format(self._owner, self._unit_type)
+        return "/home/{0}/units/unit-{1}-{2}.json".format(self._owner, self._unit_type, self._unit_id)

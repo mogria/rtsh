@@ -1,3 +1,5 @@
+import os
+
 from commands.baseCommand import BaseCommand
 from model.storage import Storage
 import model.unitfactory
@@ -18,6 +20,10 @@ class CheatCreateUnitCommand(BaseCommand):
         path = u.storage_location()
         s = Storage(path)
         s.write(u)
+
+        unitName = path.split("/")[-1]
+        symlinkLocation = "/world/{x}/{y}/units/{unitName}".format(x=self._x, y=self._y, unitName=unitName)
+        os.symlink(path, symlinkLocation)
 
         msg = "created unit {unit} and saved to {path}".format(unit=self._unitType, path=path)
         print(msg)
