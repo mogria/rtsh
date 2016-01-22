@@ -2,16 +2,16 @@ from commands.invalidGameCommandError import InvalidGameCommandError
 from commands.cheatCreateUnitCommand import CheatCreateUnitCommand
 
 
-def createCommandClass(cmdName, cmdArgs):
+def createCommandClass(player_name, cmd_name, cmd_args):
     commands = {
         "cheat_create_unit": CheatCreateUnitCommand
     }
 
-    if cmdName not in commands:
-        raise InvalidGameCommandError(cmdName, cmdArgs, "no command implemented with name: " + cmdName)
+    if cmd_name not in commands:
+        raise InvalidGameCommandError(cmd_name, cmd_args, "no command implemented with name: " + cmd_name)
 
-    isValid = commands[cmdName].isValid(cmdArgs)
-    if not isValid:
-        raise InvalidGameCommandError(cmdName, "no command implemented with name: " + cmdName)
+    is_valid = commands[cmd_name].isValid(cmd_args)
+    if not is_valid:
+        raise InvalidGameCommandError(cmd_name, "no command implemented with name: " + cmd_name)
 
-    return commands[cmdName](*cmdArgs)
+    return commands[cmd_name](player_name, *cmd_args)

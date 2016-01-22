@@ -8,48 +8,48 @@ from commands.cheatCreateUnitCommand import CheatCreateUnitCommand
 class CheatCreateUnitCommandTest(unittest.TestCase):
     def test_isValid_Only2Args_NotValid(self):
         expected = False
-        only2Args = [1, 2]
-        result = CheatCreateUnitCommand.isValid(only2Args)
+        only_2_args = [1, 2]
+        result = CheatCreateUnitCommand.isValid(only_2_args)
         self.assertEqual(expected, result)
 
     def test_isValid_3Args_Valid(self):
         expected = True
-        validArgs = ["swordfighter", 1, 2]
-        result = CheatCreateUnitCommand.isValid(validArgs)
+        valid_args = ["swordfighter", 1, 2]
+        result = CheatCreateUnitCommand.isValid(valid_args)
         self.assertEqual(expected, result)
 
     @patch("commands.cheatCreateUnitCommand.os.symlink")
     @patch("commands.cheatCreateUnitCommand.UnitFactory")
     @patch("commands.cheatCreateUnitCommand.Storage")
-    def test_execute_callsStorageWrite(self, storageClassMock, unitFactoryMock, symLinkMethodMock):
-        storageMock = MagicMock()
-        storageClassMock.return_value = storageMock
+    def test_execute_callsStorageWrite(self, storage_class_mock, unit_factory_mock, symlink_method_mock):
+        storage_mock = MagicMock()
+        storage_class_mock.return_value = storage_mock
 
-        unitMock = MagicMock()
-        unitFactoryMock.return_value = unitMock
+        unit_mock = MagicMock()
+        unit_factory_mock.return_value = unit_mock
 
         args = ["swordfighter", 2, 3]
-        sut = CheatCreateUnitCommand(*args)
+        sut = CheatCreateUnitCommand("playername", *args)
         sut.execute()
 
-        unitFactoryMock.assert_called_once_with("swordfighter", owner="foo", position=(2, 3))
-        storageMock.write.assert_called_once_with(unitMock)
+        unit_factory_mock.assert_called_once_with("swordfighter", owner="playername", position=(2, 3))
+        storage_mock.write.assert_called_once_with(unit_mock)
 
     @patch("commands.cheatCreateUnitCommand.os.symlink")
     @patch("commands.cheatCreateUnitCommand.UnitFactory")
     @patch("commands.cheatCreateUnitCommand.Storage")
-    def test_execute_createsSymlink(self, storageClassMock, unitFactoryMock, symLinkMethodMock):
-        storageMock = MagicMock()
-        storageClassMock.return_value = storageMock
+    def test_execute_createsSymlink(self, storage_class_mock, unit_factory_mock, symlink_method_mock):
+        storage_mock = MagicMock()
+        storage_class_mock.return_value = storage_mock
 
-        unitMock = MagicMock()
-        expectedStorageLocation = "/someDir/someOtherDir/file.json"
-        unitMock.storage_location.return_value = expectedStorageLocation
-        unitFactoryMock.return_value = unitMock
+        unit_mock = MagicMock()
+        expected_storage_location = "/someDir/someOtherDir/file.json"
+        unit_mock.storage_location.return_value = expected_storage_location
+        unit_factory_mock.return_value = unit_mock
 
         args = ["swordfighter", 2, 3]
-        sut = CheatCreateUnitCommand(*args)
+        sut = CheatCreateUnitCommand("playername", *args)
         sut.execute()
 
-        expectedSymlinkLocation = "/world/2/3/units/file.json"
-        symLinkMethodMock.assert_called_once_with(expectedStorageLocation, expectedSymlinkLocation)
+        expected_symlink_location = "/world/2/3/units/file.json"
+        symlink_method_mock.assert_called_once_with(expected_storage_location, expected_symlink_location)

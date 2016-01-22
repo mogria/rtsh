@@ -38,7 +38,7 @@ class CommandQueueProcessor(object):
         return s
 
     def try_execute_python_command(self, cmd_args, cmd_name):
-        cmd_class = createCommandClass(cmd_name, cmd_args)
+        cmd_class = createCommandClass(self._player_name, cmd_name, cmd_args)
         cmd_class.execute()
 
     def try_execute_shell_command(self, cmd_name, command_with_args):
