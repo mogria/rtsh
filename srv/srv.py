@@ -121,7 +121,7 @@ def processAllUsersCommands():
         processCommandsFor(playerName)
 
 
-def getAllUnits():
+def getAllUnitFiles():
     units = []
     for unitFile in glob.glob("/world/**/unit*.json", recursive=True):
         s = Storage(unitFile)
@@ -131,10 +131,10 @@ def getAllUnits():
 
 
 def moveUnits():
-    pass
-    units = getAllUnits()
-    for u in units:
-        u.move()
+    unitFiles = getAllUnitFiles()
+    for f in unitFiles:
+        with Storage(f) as u:
+            u.move()
 
 
 def startTickSystem():
