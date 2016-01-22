@@ -14,9 +14,10 @@ import stat
 import shutil
 import glob
 
-from commands.commandFactory import createCommandClass
-from commands.invalidGameCommandError import InvalidGameCommandError
+from printWithFlush import p
+from util import getQueuePathFromPlayerName
 from model.storage import Storage
+from commandQueueProcessor import CommandQueueProcessor
 
 TICK_INTERVAL_SEC = 1
 USER_RTSHSRV = "rtshsrv"
@@ -24,26 +25,6 @@ GROUP_RTSHPLAYERS = "rtshplayers"
 
 
 # ************** functions
-
-def p(*args):
-    text = ""
-    for i in args:
-        text += str(i)
-    print(text)
-    sys.stdout.flush()
-
-
-def removeNewLineCharacters(s):
-    if s.endswith("\n"):
-        s = s[:-1]
-    return s
-
-
-def getQueuePathFromPlayerName(playerName):
-    playerDir = os.path.join("/home", playerName)
-    queuePath = os.path.join(playerDir, "command-queue")
-    return queuePath
-
 
 def createPlayer(playerName):
     p("trying to create player: ", playerName)
@@ -85,39 +66,14 @@ def prepare():
     p("done with preparation")
 
 
-def callCommand(commandWithArgs):
-    splitter = commandWithArgs.split(" ")
-    cmdName = splitter[0]
-    cmdArgs = splitter[1:]
-    try:
-        cmdClass = createCommandClass(cmdName, cmdArgs)
-        cmdClass.execute()
-    except InvalidGameCommandError as e:
-        pathToCommands = "/gamesrv/commands"
-        fullCmdPath = os.path.join(pathToCommands, cmdName)
-        p(fullCmdPath)
-        if os.path.isfile(fullCmdPath):
-            fullCmdPathWithArgs = os.path.join(pathToCommands, commandWithArgs)
-            p(os.system(fullCmdPathWithArgs))
-
-
-def processCommandsFor(playerName):
-    p("player: ", playerName)
-    queuePath = getQueuePathFromPlayerName(playerName)
-    with open(queuePath, "r") as commandQueue:
-        commandsWithArgs = commandQueue.readlines()
-        for command in commandsWithArgs:
-            command = removeNewLineCharacters(command)
-            callCommand(command)
-    with open(queuePath, "w") as commandQueue:
-        commandQueue.truncate(0)
-
 
 def processAllUsersCommands():
     numberOfPlayers = len(sys.argv)
     for i in range(1, numberOfPlayers):
         playerName = sys.argv[i]
-        processCommandsFor(playerName)
+        cqp = CommandQueueProcessor(playerName)
+        cqp.processCommands()
+
 
 
 def getAllUnitFiles():
@@ -144,6 +100,7 @@ def startTickSystem():
         tick += 1
         processAllUsersCommands()
         moveUnits()
+
 
 
 def main():
