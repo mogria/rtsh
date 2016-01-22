@@ -108,7 +108,6 @@ def processCommandsFor(playerName):
         commandsWithArgs = commandQueue.readlines()
         for command in commandsWithArgs:
             command = removeNewLineCharacters(command)
-            p(command)
             callCommand(command)
     with open(queuePath, "w") as commandQueue:
         commandQueue.truncate(0)
