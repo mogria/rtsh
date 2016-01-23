@@ -27,7 +27,7 @@ class Moveable(Positionable):
         self._move_target = move_target
 
     def reset_move_cycle(self):
-        self._move_cycle = self.move_speed()
+        self._move_cycle = self.move_speed
 
     def move(self):
         """move this object to the specified location set by move_target.
@@ -36,11 +36,11 @@ class Moveable(Positionable):
          - not move the object at all because no move_target is specified
          - move the object by 1 field in the x or y coordinate
         This method should be called once, each tick, 
-        o the movement speed of this object can be handled properly"""
+        so the movement speed of this object can be handled properly"""
         if self._move_cycle <= 0:
             move = self.pathfind_next_move()
             if move[0] != 0 or move[1] != 0:
-                self._position = numpy.add(self._position, self._move)
+                self._position = self.convert_back(numpy.add(self._position, move))
                 # only reset move_cycle after we have actually moved
                 self.reset_move_cycle()
             else:
@@ -53,7 +53,7 @@ class Moveable(Positionable):
         """simple path finding algorithm, which always takes the direct path
         to the target. This only works as long as there are no obstacles
         on the map."""
-        if self._move_target == None:
+        if self._move_target is None:
             return (0, 0)
 
         # check on which coordinate we need to walk longer
@@ -72,4 +72,8 @@ class Moveable(Positionable):
         distance = numpy.multiply(distance, chooser)
         return tuple(distance)
 
-
+    def convert_back(self, nparray):
+        pos1 = int(nparray[0])
+        pos2 = int(nparray[1])
+        t = (pos1, pos2)
+        return t

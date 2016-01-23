@@ -33,7 +33,6 @@ class TickSystem(object):
             with Storage(f) as u:
                 u.move()
 
-
     def start(self):
         tick = 0
         while True:

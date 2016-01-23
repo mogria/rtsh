@@ -1,4 +1,7 @@
+import glob
+
 from commands.baseCommand import BaseCommand
+from model.storage import Storage
 
 
 class MoveUnitCommand(BaseCommand):
@@ -14,6 +17,11 @@ class MoveUnitCommand(BaseCommand):
 
         print("pretending to doing stuff like moving units and so...")
 
+        pattern = "/world/**/unit-*-{unit_id}.json".format(unit_id=self._unit_id)
+        unit_path = glob.glob(pattern, recursive=True)[0]
+
+        with Storage(unit_path) as unit:
+            unit.move_target = (self._x, self._y)
 
     @classmethod
     def isValid(cls, args):
