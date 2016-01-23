@@ -23,7 +23,7 @@ class CheatCreateUnitCommand(BaseCommand):
         s.write(u)
 
         unit_name = path.split("/")[-1]
-        symlink_location = "/world/{x}/{y}/units/{unitName}".format(x=self._x, y=self._y, unitName=unit_name)
+        symlink_location = u.symlink_source_location()
         os.symlink(path, symlink_location)
 
         msg = "created unit {unit} and saved to {path}".format(unit=self._unit_type, path=path)

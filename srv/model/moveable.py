@@ -1,9 +1,12 @@
 import numpy
+import os
 import random
+
 from model.positionable import Positionable
 
+
 class Moveable(Positionable):
-    def __init__(self, move_speed = 1, move_cycle = -1, move_target = None, *args, **kwargs):
+    def __init__(self, move_speed=1, move_cycle=-1, move_target=None, *args, **kwargs):
         super(Moveable, self).__init__(*args, **kwargs)
         self._move_speed = move_speed
         self._move_cycle = move_cycle
@@ -40,7 +43,7 @@ class Moveable(Positionable):
         if self._move_cycle <= 0:
             move = self.pathfind_next_move()
             if move[0] != 0 or move[1] != 0:
-                self._position = self.convert_back(numpy.add(self._position, move))
+                self.actually_move_to(numpy.add(self._position, move))
                 # only reset move_cycle after we have actually moved
                 self.reset_move_cycle()
             else:
@@ -48,6 +51,17 @@ class Moveable(Positionable):
                 self._move_target = None
         else:
             self._move_cycle -= 1
+
+    def actually_move_to(self, to_position):
+        to_position = self.convert_back(to_position)
+
+        before_symlink = self.symlink_source_location()
+        self._position = to_position
+        after_symlink = self.symlink_source_location()
+        dest = self.storage_location()
+
+        os.remove(before_symlink)
+        os.symlink(dest, after_symlink)
 
     def pathfind_next_move(self):
         """simple path finding algorithm, which always takes the direct path

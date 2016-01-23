@@ -45,11 +45,12 @@ class CheatCreateUnitCommandTest(unittest.TestCase):
         unit_mock = MagicMock()
         expected_storage_location = "/someDir/someOtherDir/file.json"
         unit_mock.storage_location.return_value = expected_storage_location
+        expected_symlink_location = "/world/2/3/units/file.json"
+        unit_mock.symlink_source_location.return_value = expected_symlink_location
         unit_factory_mock.return_value = unit_mock
 
         args = ["swordfighter", 2, 3]
         sut = CheatCreateUnitCommand("playername", *args)
         sut.execute()
 
-        expected_symlink_location = "/world/2/3/units/file.json"
         symlink_method_mock.assert_called_once_with(expected_storage_location, expected_symlink_location)

@@ -33,3 +33,10 @@ class Unit(GameObject, Destroyable, Moveable, Nameable):
 
     def storage_location(self):
         return "/home/{0}/units/unit-{1}-{2}.json".format(self._owner, self._unit_type, self._unit_id)
+
+    def symlink_source_location(self):
+        x_pos = self.position[0]
+        y_pos = self.position[1]
+        symlink_location = "/world/{x}/{y}/units/unit-{unitType}-{unitId}.json" \
+            .format(x=x_pos, y=y_pos, unitType=self._unit_type, unitId=self._unit_id)
+        return symlink_location
