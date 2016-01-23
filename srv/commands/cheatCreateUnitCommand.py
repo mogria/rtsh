@@ -10,14 +10,14 @@ class CheatCreateUnitCommand(BaseCommand):
     def __init__(self, player_name, unit_type, x, y):
         super().__init__("CheatCreateUnit")
         self._player_name = player_name
-        self._unitType = unit_type
+        self._unit_type = unit_type
         self._x = int(x)
         self._y = int(y)
 
     def execute(self):
         super().execute()
 
-        u = UnitFactory(self._unitType, owner=self._player_name, position=(self._x, self._y))
+        u = UnitFactory(self._unit_type, owner=self._player_name, position=(self._x, self._y))
         path = u.storage_location()
         s = Storage(path)
         s.write(u)
@@ -26,7 +26,7 @@ class CheatCreateUnitCommand(BaseCommand):
         symlink_location = "/world/{x}/{y}/units/{unitName}".format(x=self._x, y=self._y, unitName=unit_name)
         os.symlink(path, symlink_location)
 
-        msg = "created unit {unit} and saved to {path}".format(unit=self._unitType, path=path)
+        msg = "created unit {unit} and saved to {path}".format(unit=self._unit_type, path=path)
         print(msg)
 
     @classmethod
