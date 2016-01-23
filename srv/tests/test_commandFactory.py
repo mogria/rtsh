@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import ANY
+from unittest.mock import patch
 
 from commands.commandFactory import createCommandClass
 from commands.invalidGameCommandError import InvalidGameCommandError
@@ -24,6 +25,10 @@ class CommandFactoryTest(unittest.TestCase):
         self.assertIsInstance(command, CheatCreateUnitCommand)
 
     def test_createCommandClass_MoveUnitCommand_ReturnsCommand(self):
-        valid_args = [99, 1, 2]
-        command = createCommandClass("playername", "move_unit", valid_args)
-        self.assertIsInstance(command, MoveUnitCommand)
+        with patch("commands.moveUnitCommand.Storage") as storage_mock:
+            world_mock = storage_mock.return_value.__enter__()
+            world_mock.size = [8, 8]
+
+            valid_args = [99, 1, 2]
+            command = createCommandClass("playername", "move_unit", valid_args)
+            self.assertIsInstance(command, MoveUnitCommand)

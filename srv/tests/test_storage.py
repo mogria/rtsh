@@ -36,7 +36,7 @@ class StorageTest(unittest.TestCase):
         new_world = self.storage.read()
         self.assertEquals(new_world.name, self.world.name)
         self.assertEquals(new_world.size, self.world.size)
-        self.assertEquals(new_world.num_players, self.world.num_players)
+        self.assertEquals(new_world.max_players, self.world.max_players)
 
     def test_with_statement(self):
         t1 = Tile("grass", (0, 0))

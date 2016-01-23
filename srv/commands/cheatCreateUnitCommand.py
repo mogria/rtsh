@@ -22,7 +22,6 @@ class CheatCreateUnitCommand(BaseCommand):
         s = Storage(path)
         s.write(u)
 
-        unit_name = path.split("/")[-1]
         symlink_location = u.symlink_source_location()
         os.symlink(path, symlink_location)
 
