@@ -20,4 +20,9 @@ class Building(GameObject, Destroyable, Positionable, Nameable, Ownable):
         return self._building_type
 
     def storage_location(self):
-        return "{0}/buildings/building-{1}.json".format(Ownable.storage_location(self), self._building_type)
+        return "{0}/buildings/building-{1}.json".format(Ownable.storage_location(self), self.building_id)
+
+    def symlinks(self):
+        return [ "{0}/buildings/unit-{1}.json".format(Positionable.storage_location(self), self.building_id)
+               , "{0}/buildings/by-type/{1}/unit-{2}.json".format(Ownable.storage_location(self), self.building_type, self.building_id)
+               ]

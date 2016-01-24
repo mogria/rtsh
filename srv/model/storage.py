@@ -36,22 +36,34 @@ class Storage(object):
         'resources': Resources
     }
 
-    def __init__(self, obj_or_filename):
-        if isinstance(obj_or_filename, GameObject):
-            self._filename = obj_or_filename.storage_location()
+    def __init__(self, obj):
+        if isinstance(obj, GameObject):
+            self._obj = obj
+            self._old_storage_location = obj.storage_location()
+            self._old_symlinks = obj.symlinks()
         else:
-            self._filename = obj_or_filename
+            raise ValueError("can only store GameObject's")
+
+    @staticmethod
+    def from_file(filename):
+        obj = Storage._read(filename)
+        return Storage(obj)
 
     def __enter__(self):
-       self._obj = self.read()
+       self.read()
        return self._obj
 
     def __exit__(self, type, value, traceback):
-       self.write(self._obj)
+       self.write()
 
     def read(self):
+        self._obj = Storage._read(self._old_storage_location)
+        return self._obj
+
+    @staticmethod
+    def _read(filename):
         result = {}
-        with open(self._filename, "r") as f:
+        with open(filename, "r") as f:
             try:
                 result = json.load(f) 
             except ValueError as e:
@@ -66,18 +78,51 @@ class Storage(object):
         del result["class"]
         return game_object_class(**result)
 
-    def write(self, obj):
-        if not isinstance(obj, GameObject):
-            raise ValueError("only GameObject and it's subtypes can be written by GameObjectPersistence")
+    def write(self):
+        # make sure the current storage location is still up to date
+        new_location = Storage._remove_if_old(self._old_storage_location, self._obj.storage_location())
+        self._old_storage_location = self._obj.storage_location()
+        
+        new_symlinks = self._obj.symlinks()
+        if new_location:
+            # if the storage location changed all the symlinks need to be recreated
+            # so just delete them in here
+            for symlink in self._old_symlinks:
+                os.remove(symlink)
+        else:
+            # this is based on the assumtion that the same game object
+            # always returns the same amount of symlinks
+            for idx, old_link in enumerate(self._old_symlinks):
+                res = Storage._remove_if_old(old_link, new_symlinks[idx])
+        self._old_symlinks = new_symlinks
 
         # make sure the directory for the file exists
-        directory = os.path.dirname(self._filename)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        Storage._make_required_dirs(self._old_storage_location)
 
-        with open(self._filename, "w") as f:
-            json_properties = filterproperties(obj)
+        # write the file (possibly to a new location)
+        with open(self._old_storage_location, "w") as f:
+            json_properties = filterproperties(self._obj)
             json_properties["class"] = json_properties["classname"]
             del json_properties["classname"]
             json.dump(json_properties, f, indent=4)
 
+        # create new symlinks
+        for new_link in self._old_symlinks:
+            if not os.path.lexists(new_link):
+                Storage._make_required_dirs(new_link)
+                os.symlink(self._old_storage_location, new_link)
+
+    @staticmethod
+    def _remove_if_old(old_location, new_location):
+        """removes old files when the storage location or the symlink location changed"""
+        if new_location != old_location:
+            if os.path.lexists(old_location):
+                os.unlink(old_location)
+            return True
+        return False
+
+    @staticmethod
+    def _make_required_dirs(new_file_to_be_written):
+        directory = os.path.dirname(new_file_to_be_written)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
