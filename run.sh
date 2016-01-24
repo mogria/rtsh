@@ -74,7 +74,7 @@ if [ -n "$RTSH_DEVELOP" ]; then
     # run bower install so client-side javascript dependencies can also be served from
     # the host filesystem (you need bower installed for this) TODO: maybe use a docker container for this?
     echo "running 'bower install'"
-    ( cd "$SOURCE_LOCATION/wetty-cli"; bower install )
+    docker run -i --rm -v "$SOURCE_LOCATION/wetty-cli:/usr/src/app" --user $(id -u) mogria/rtsh-bower install
 
     # fix permissions for srv/commands
     chmod -R 755 $SOURCE_LOCATION/srv/commands

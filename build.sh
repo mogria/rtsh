@@ -15,13 +15,20 @@ cd "$SOURCE_LOCATION"
 
 build() {
     echo " * Building $1"
-    echo " $ docker build -t" "$1" "${BUILD_ARGS[@]}" "./$2"
-    docker build -t "$1" "${BUILD_ARGS[@]}" "./$2"
+    if [ -z "$3" ]; then
+        echo " $ docker build -t" "$1" "${BUILD_ARGS[@]}" "./$2"
+        docker build -t "$1" "${BUILD_ARGS[@]}" "./$2"
+    else
+        echo " $ docker build -t" "$1" "${BUILD_ARGS[@]}" -f "./$2/$3" "./$2"
+        docker build -t "$1" "${BUILD_ARGS[@]}" -f "./$2/$3" "./$2"
+    fi
 }
 
 build mogria/rtsh-srv srv && \
 build mogria/rtsh-wetty-cli wetty-cli/ && \
 build mogria/rtsh-base-world "srv/lib"
+build mogria/rtsh-srv-test srv Dockerfile_test
+build mogria/rtsh-bower wetty-cli Dockerfile_bower
 
 # build all worlds
 export -f build # export needed for xargs to find the build() function
