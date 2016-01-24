@@ -8,6 +8,7 @@
 import sys
 import os
 import pwd
+import grp
 import subprocess
 import stat
 import shutil
@@ -15,6 +16,10 @@ import shutil
 from printWithFlush import p
 from util import getQueuePathFromPlayerName
 from tickSystem import TickSystem
+from model.resources import Resources
+from model.storage import Storage
+from model.world import World
+from model.slaveunit import SlaveUnit
 
 USER_RTSHSRV = "rtshsrv"
 GROUP_RTSHPLAYERS = "rtshplayers"
@@ -40,10 +45,18 @@ def createPipe(playerName):
     shutil.chown(queuePath, USER_RTSHSRV, GROUP_RTSHPLAYERS)
     p("created queue: ", queuePath)
 
+def initializePlayerGameObjects(world, num, playerName):
+    start_position = world.start_coordinates[num]
+    resources = Resources(owner=playerName, gold=200, position=start_position)
+    Storage(resources).write()
+    slave = SlaveUnit(position=start_position, owner=playerName)
+    Storage(slave).write()
 
 def changeToLowerPriviledgedUser():
     p("trying to change user to ", USER_RTSHSRV)
     p(subprocess.check_output("whoami"))
+    gid = grp.getgrnam(GROUP_RTSHPLAYERS).gr_gid
+    os.setgid(gid)
     uid = pwd.getpwnam(USER_RTSHSRV).pw_uid
     os.setuid(uid)
     p(subprocess.check_output("whoami"))
@@ -59,6 +72,10 @@ def prepare():
         createPipe(playerName)
 
     changeToLowerPriviledgedUser()
+
+    world = Storage.from_file(World.STORAGE_LOCATION).read()
+    for i in range(0, numberOfPlayers - 1):
+        initializePlayerGameObjects(world, i, sys.argv[i + 1])
     p("done with preparation")
 
 
