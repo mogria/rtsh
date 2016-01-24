@@ -5,6 +5,8 @@ from model.tile import Tile
 from model.world import World
 from model.gameobject import GameObject
 from model.unitfactory import UnitFactory
+from model.buildingfactory import BuildingFactory
+from model.resources import Resources
 
 class InvalidGameObectError(Exception):
     def __init__(self, file, message, inner_exception = None):
@@ -28,9 +30,10 @@ def filterproperties(obj):
 class Storage(object):
     game_object_classes = {
         'unit': UnitFactory,
-        'building': None,
+        'building': BuildingFactory,
         'tile': Tile,
         'world': World,
+        'resources': Resources
     }
 
     def __init__(self, obj_or_filename):
