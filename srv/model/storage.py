@@ -104,7 +104,8 @@ class Storage(object):
             json_properties = filterproperties(self._obj)
             json_properties["class"] = json_properties["classname"]
             del json_properties["classname"]
-            json.dump(json_properties, f, indent=4)
+            json.dump(json_properties, f, indent=4, sort_keys=True)
+            f.write('\n') # add addtional \n for better viewing on shell
 
         # create new symlinks
         for new_link in self._old_symlinks:
