@@ -43,7 +43,7 @@ class Moveable(Positionable):
         if self._move_cycle <= 0:
             move = self.pathfind_next_move()
             if move[0] != 0 or move[1] != 0:
-                self._position = tuple(numpy.add(self._position, move))
+                self._position = self.convert_back(numpy.add(self._position, move))
                 # only reset move_cycle after we have actually moved
                 self.reset_move_cycle()
             else:
