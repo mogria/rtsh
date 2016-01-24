@@ -25,7 +25,7 @@ class CommandFactoryTest(unittest.TestCase):
         self.assertIsInstance(command, CheatCreateUnitCommand)
 
     def test_createCommandClass_MoveUnitCommand_ReturnsCommand(self):
-        with patch("commands.moveUnitCommand.Storage") as storage_mock:
+        with patch("commands.moveUnitCommand.Storage.from_file") as storage_mock:
             world_mock = storage_mock.return_value.__enter__()
             world_mock.size = [8, 8]
 
