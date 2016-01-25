@@ -22,3 +22,7 @@ class Tile(GameObject, Positionable):
     def storage_location(self):
         """get the file name this tile should be stored at"""
         return Positionable.storage_location(self) + "/tile.json"
+
+    def symlinks(self):
+        # no symlinks needed
+        return []

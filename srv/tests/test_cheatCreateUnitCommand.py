@@ -24,6 +24,7 @@ class CheatCreateUnitCommandTest(unittest.TestCase):
     def test_execute_callsStorageWrite(self, storage_class_mock, unit_factory_mock, symlink_method_mock):
         storage_mock = MagicMock()
         storage_class_mock.return_value = storage_mock
+        storage_class_mock.from_file.return_value = storage_mock
 
         unit_mock = MagicMock()
         unit_factory_mock.return_value = unit_mock
@@ -33,14 +34,14 @@ class CheatCreateUnitCommandTest(unittest.TestCase):
         sut.execute()
 
         unit_factory_mock.assert_called_once_with("swordfighter", owner="playername", position=(2, 3))
-        storage_mock.write.assert_called_once_with(unit_mock)
+        storage_mock.write.assert_called_once_with()
 
-    @patch("commands.cheatCreateUnitCommand.os.symlink")
     @patch("commands.cheatCreateUnitCommand.UnitFactory")
     @patch("commands.cheatCreateUnitCommand.Storage")
-    def test_execute_createsSymlink(self, storage_class_mock, unit_factory_mock, symlink_method_mock):
+    def test_execute_createsSymlink(self, storage_class_mock, unit_factory_mock):
         storage_mock = MagicMock()
         storage_class_mock.return_value = storage_mock
+        storage_class_mock.from_file.return_value = storage_mock
 
         unit_mock = MagicMock()
         expected_storage_location = "/someDir/someOtherDir/file.json"
@@ -53,4 +54,3 @@ class CheatCreateUnitCommandTest(unittest.TestCase):
         sut = CheatCreateUnitCommand("playername", *args)
         sut.execute()
 
-        symlink_method_mock.assert_called_once_with(expected_storage_location, expected_symlink_location)

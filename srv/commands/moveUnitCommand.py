@@ -21,7 +21,7 @@ class MoveUnitCommand(BaseCommand):
         pattern = "/world/**/units/unit-*-{unit_id}.json".format(unit_id=self._unit_id)
         unit_path = glob.glob(pattern, recursive=True)[0]
 
-        with Storage(unit_path) as unit:
+        with Storage.from_file(unit_path) as unit:
             unit.move_target = (self._x, self._y)
 
     @classmethod
@@ -41,7 +41,7 @@ class MoveUnitCommand(BaseCommand):
 
     @classmethod
     def is_valid_position(cls, pos_x, pos_y):
-        with Storage(World.storage_location()) as world:
+        with Storage.from_file(World.STORAGE_LOCATION) as world:
             if 0 <= pos_x < world.size[0] and 0 <= pos_y < world.size[1]:
                 return True
 

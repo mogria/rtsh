@@ -9,11 +9,11 @@ class Destroyable(object):
     }
 
     def __init__(self, health = 1, armor_type = "normal", *args, **kwargs):
+        super(Destroyable, self).__init__(*args, **kwargs)
         self._health = health
         if not armor_type in Destroyable.armor_types:
             raise ValueError("invalid armortype '{0}'".format(armor_type))
         self._armor_type = armor_type
-        super(Destroyable, self).__init__(*args, **kwargs)
 
     @property
     def health(self):

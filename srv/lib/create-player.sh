@@ -42,14 +42,14 @@ if [ "$useradd_exit" -eq 0 ]; then
     if [ 1 -eq "$CREATE_HOME" ]; then
         # create basic layout of home directory
         cd "/home/$1"
+        echo '{"class": "resources"}' > resources.json
         mkdir units/
         mkdir buildings/
+        chown -R rtshsrv:$1 resources.json 
+        chown -R rtshsrv:rtshplayers units/ buildings/
 
-        chown -R rtshsrv:rtshplayers units/
-        chown -R rtshsrv:rtshplayers buildings/
-
-        chmod 750 units/
-        chmod 750 buildings/
+        chmod 750 resources.json units/ buildings/
+        chmod -x resources.json
     fi
 fi
 

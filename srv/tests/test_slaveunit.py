@@ -6,7 +6,7 @@ from model.slaveunit import SlaveUnit
 
 class SlaveUnitTest(unittest.TestCase):
     def setUp(self):
-        self.slave = SlaveUnit(position = (0, 0))
+        self.slave = SlaveUnit(position = (0, 0), owner = "johnny")
 
     def test_instance(self):
         self.assertIsInstance(self.slave, Unit)
@@ -19,3 +19,7 @@ class SlaveUnitTest(unittest.TestCase):
         self.assertEquals(2, self.slave.move_speed)
         self.assertEquals('light', self.slave.armor_type)
         self.assertEquals(50, self.slave.build_speed)
+
+    def test_storage_location(self):
+        id = self.slave.unit_id
+        self.assertEquals("/home/johnny/units/unit-{0}.json".format(id), self.slave.storage_location())

@@ -12,7 +12,7 @@ class MoveUnitCommandTest(unittest.TestCase):
         self.assertEqual(expected, result)
 
     def test_isValid_targetPosOutOfBounds_NotValid(self):
-        with patch("commands.moveUnitCommand.Storage") as storage_mock:
+        with patch("commands.moveUnitCommand.Storage.from_file") as storage_mock:
             world_mock = storage_mock.return_value.__enter__()
             world_mock.size = [8, 8]
 
@@ -25,7 +25,7 @@ class MoveUnitCommandTest(unittest.TestCase):
             self.assertEqual(False, result)
 
     def test_isValid_3Args_Valid(self):
-        with patch("commands.moveUnitCommand.Storage") as storage_mock:
+        with patch("commands.moveUnitCommand.Storage.from_file") as storage_mock:
             with patch("commands.moveUnitCommand.glob.glob") as glob_method_mock:
                 world_mock = storage_mock.return_value.__enter__()
                 world_mock.size = [8, 8]
@@ -35,3 +35,4 @@ class MoveUnitCommandTest(unittest.TestCase):
                 valid_args = [99, 1, 2]
                 result = MoveUnitCommand.isValid(valid_args)
                 self.assertEqual(expected, result)
+

@@ -2,6 +2,7 @@ from model.gameobject import GameObject
 
 
 class World(GameObject):
+    STORAGE_LOCATION = "/world/world.json"
     def __init__(self, name="none", size=[-1, -1], max_players=0, start_coordinates=[], terrain_generator="none", seed=-1):
         super(World, self).__init__("world")
         self._name = name
@@ -35,6 +36,9 @@ class World(GameObject):
     def seed(self):
         return self._seed
 
-    @classmethod
-    def storage_location(cls):
-        return "/world/world.json"
+    def storage_location(self):
+        return World.STORAGE_LOCATION
+
+    def symlinks(self):
+        # no symlinks needed
+        return []

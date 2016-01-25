@@ -20,17 +20,12 @@ class TickSystem(object):
             cqp.processCommands()
 
     def get_unit_files(self):
-        units = []
-        for unitFile in glob.glob("/world/**/unit*.json", recursive=True):
-            s = Storage(unitFile)
-            u = s.read()
-            units.append(u)
-        return units
+        return glob.glob("/world/**/unit*.json", recursive=True)
 
     def move_units(self):
         unit_files = self.get_unit_files()
         for f in unit_files:
-            with Storage(f) as u:
+            with Storage.from_file(f) as u:
                 u.move()
 
     def start(self):

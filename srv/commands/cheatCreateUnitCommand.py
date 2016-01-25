@@ -18,14 +18,10 @@ class CheatCreateUnitCommand(BaseCommand):
         super().execute()
 
         u = UnitFactory(self._unit_type, owner=self._player_name, position=(self._x, self._y))
-        path = u.storage_location()
-        s = Storage(path)
-        s.write(u)
+        s = Storage(u)
+        s.write()
 
-        symlink_location = u.symlink_source_location()
-        os.symlink(path, symlink_location)
-
-        msg = "created unit {unit} and saved to {path}".format(unit=self._unit_type, path=path)
+        msg = "created unit {unit} and saved to {path}".format(unit=self._unit_type, path=u.storage_location())
         print(msg)
 
     @classmethod
