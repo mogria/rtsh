@@ -18,7 +18,7 @@ class MoveUnitCommand(BaseCommand):
 
         print("pretending to doing stuff like moving units and so...")
 
-        pattern = "/world/**/units/unit-*-{unit_id}.json".format(unit_id=self._unit_id)
+        pattern = "/world/**/units/unit-{unit_id}.json".format(unit_id=self._unit_id)
         unit_path = glob.glob(pattern, recursive=True)[0]
 
         with Storage.from_file(unit_path) as unit:
@@ -49,5 +49,5 @@ class MoveUnitCommand(BaseCommand):
 
     @classmethod
     def is_existing_id(cls, unit_id):
-        pattern = "/world/**/units/unit-*-{unit_id}.json".format(unit_id=unit_id)
+        pattern = "/world/**/units/unit-{unit_id}.json".format(unit_id=unit_id)
         return len(glob.glob(pattern, recursive=True)) == 1
