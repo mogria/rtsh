@@ -26,9 +26,11 @@ class CommandFactoryTest(unittest.TestCase):
 
     def test_createCommandClass_MoveUnitCommand_ReturnsCommand(self):
         with patch("commands.moveUnitCommand.Storage") as storage_mock:
-            world_mock = storage_mock.return_value.__enter__()
-            world_mock.size = [8, 8]
+            with patch("commands.moveUnitCommand.glob.glob") as glob_method_mock:
+                world_mock = storage_mock.return_value.__enter__()
+                world_mock.size = [8, 8]
+                glob_method_mock.return_value = ["/somePath/unit-unitType-99.json"]
 
-            valid_args = [99, 1, 2]
-            command = createCommandClass("playername", "move_unit", valid_args)
-            self.assertIsInstance(command, MoveUnitCommand)
+                valid_args = [99, 1, 2]
+                command = createCommandClass("playername", "move_unit", valid_args)
+                self.assertIsInstance(command, MoveUnitCommand)

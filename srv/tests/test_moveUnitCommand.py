@@ -26,10 +26,12 @@ class MoveUnitCommandTest(unittest.TestCase):
 
     def test_isValid_3Args_Valid(self):
         with patch("commands.moveUnitCommand.Storage") as storage_mock:
-            world_mock = storage_mock.return_value.__enter__()
-            world_mock.size = [8, 8]
+            with patch("commands.moveUnitCommand.glob.glob") as glob_method_mock:
+                world_mock = storage_mock.return_value.__enter__()
+                world_mock.size = [8, 8]
+                glob_method_mock.return_value = ["/somePath/unit-unitType-99.json"]
 
-            expected = True
-            valid_args = [1, 1, 2]
-            result = MoveUnitCommand.isValid(valid_args)
-            self.assertEqual(expected, result)
+                expected = True
+                valid_args = [99, 1, 2]
+                result = MoveUnitCommand.isValid(valid_args)
+                self.assertEqual(expected, result)
