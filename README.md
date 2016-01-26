@@ -28,14 +28,15 @@ Do the following to grab the source and execute the project:
     % ./build.sh
 
     # if the RTSH_DEVELOP environment variable is set to 1 the source directories on the host
-    # are shared with the docker containers and the newest source is run, including your edits.
+    # are shared with the docker containers and the newest source is run (including your edits)
+    # and the execution of ./build.sh is not necessary for a change to take effect.
     # (this doesn't apply to wetty-cli/app.js)
     % RTSH_DEVELOP=1 ./run.sh worldname playernames...
 
 If `RTSH_DEVELOP` is set the web server binds to `127.0.0.1` on port 80, so you can only access the site from localhost.
 You can change the port by setting the `RTSH_PORT` environment variable. You can change the address the 
 
-The password for each user given to the run.sh script is just `rtsh`.
+The password for logging in on the web tty for is `rtsh` for every user as of now.
 
 We'll keep discussing development stuff in the [Issues](https://github.com/mogria/rtsh/issues) section.
 
@@ -50,7 +51,7 @@ If you don't want to do any development and just want to run this project on you
     % ./update.sh
     % ./run.sh worldname playernames...
 
-The web server then binds to `0.0.0.0` on port 80. Use thge `RTSH_BIND_ADDRESS` and `RTSH_PORT` environment variables to change this.
+The web server then binds to `0.0.0.0` on port 80. Use the `RTSH_BIND_ADDRESS` and `RTSH_PORT` environment variables to change this.
 
 ## License
 
