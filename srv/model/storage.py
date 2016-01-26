@@ -20,8 +20,7 @@ def getproperties(obj):
 
 def filterobject(obj, included_properties):
     """only return certain properties of an object"""
-    dictionary = dir(obj)
-    return {k: getattr(obj, k) for k in dictionary if k in included_properties}
+    return {prop: getattr(obj, prop) for prop in included_properties}
 
 def filterproperties(obj):
     """get a dictionary of an object with only @property annotated properties"""
