@@ -1,3 +1,5 @@
+from model.dirty import dirty
+
 class ConstructionError(Exception):
     def __init__(self, object_name, object_type, message):
         super(ConstructionError, self).__init__("Construction error with {0}_type '{1}': {2}".format(object_name, object_type, message))
@@ -12,5 +14,7 @@ def CommonFactory(object_name, object_type, object_types, *args, **kwargs):
     object_class = object_types[object_type]
     if object_class is None:
         raise ConstructionError(object_name, object_type, "{0} not yet implemented".format(object_name))
-    return object_class(*args, **kwargs)
+    obj = object_class(*args, **kwargs)
+    dirty(obj)
+    return obj
 

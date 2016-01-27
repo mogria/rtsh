@@ -1,3 +1,4 @@
+from model.dirty import dirty
 
 class Builder(object):
     def __init__(self, build_speed = 0, capacity = 0, *args, **kwargs):
@@ -21,6 +22,7 @@ class Builder(object):
         Returns true when finished. False if more work can be done."""
         max_health = building.max_health()
         if building._health < max_health:
+            dirty(self)
             building._health += self._build_speed
             if building._health >= max_health:
                 building._health = max_health

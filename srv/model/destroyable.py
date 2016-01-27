@@ -1,4 +1,5 @@
 from model.attacker import Attacker
+from model.dirty import dirty
 
 class Destroyable(object):
     armor_types = {
@@ -27,6 +28,7 @@ class Destroyable(object):
         return self._health <= 0
 
     def get_attacked(self, damage, attack_type):
+        dirty(self)
         bonusmap = [
             [2.0, 0.5, 1.0, 1.0],
             [1.0, 2.0, 0.5, 1.0],

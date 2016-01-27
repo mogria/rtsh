@@ -7,6 +7,7 @@ from model.gameobject import GameObject
 from model.unitfactory import UnitFactory
 from model.buildingfactory import BuildingFactory
 from model.resources import Resources
+from model.dirty import dirty
 
 class InvalidGameObjectError(Exception):
     def __init__(self, file, message, inner_exception = None):
@@ -65,7 +66,14 @@ class Storage(object):
         del result["class"]
         return game_object_class(**result)
 
-    def write(self):
+    def write(self, make_dirty=False):
+        if make_dirty:
+            dirty(self._obj)
+
+        # no need to do anything if object hasn't changed
+        if not self._obj._dirty:
+            return
+
         # make sure the current storage location is still up to date
         new_location = Storage._remove_if_old(self._old_storage_location, self._obj.storage_location())
         self._old_storage_location = self._obj.storage_location()

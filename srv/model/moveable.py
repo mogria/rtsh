@@ -3,6 +3,7 @@ import os
 import random
 
 from model.positionable import Positionable
+from model.dirty import dirty
 
 
 class Moveable(Positionable):
@@ -43,6 +44,7 @@ class Moveable(Positionable):
         if self._move_cycle <= 0:
             move = self.pathfind_next_move()
             if move[0] != 0 or move[1] != 0:
+                dirty(self)
                 self._position = self.convert_back(numpy.add(self._position, move))
                 # only reset move_cycle after we have actually moved
                 self.reset_move_cycle()

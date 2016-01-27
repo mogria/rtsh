@@ -5,6 +5,7 @@ from model.storage import Storage
 from model.tile import Tile
 from model.world import World
 from model.unitfactory import UnitFactory
+from model.dirty import dirty
 
 class StorageTest(unittest.TestCase):
 
@@ -18,24 +19,24 @@ class StorageTest(unittest.TestCase):
     def test_initialisation_by_object(self):
         tile = Tile("grass", [0, 0])
         storage = Storage(tile)
-        storage.write()
+        storage.write(make_dirty=True)
         tile2 = storage.read()
         self.assertEquals("grass", tile2.terrain)
 
-    def testwrite_tile(self):
-        self.tile_storage.write()
+    def test_write_tile(self):
+        self.tile_storage.write(make_dirty=True)
 
     def test_read_tile(self):
-        self.tile_storage.write()
+        self.tile_storage.write(make_dirty=True)
         new_tile = self.tile_storage.read()
         self.assertEquals(new_tile.terrain, self.tile.terrain)
         self.assertEquals(new_tile.position, self.tile.position)
 
     def test_write_world(self):
-        self.world_storage.write()
+        self.world_storage.write(make_dirty=True)
 
     def test_read_world(self):
-        self.world_storage.write()
+        self.world_storage.write(make_dirty=True)
         new_world = self.world_storage.read()
         self.assertEquals(new_world.name, self.world.name)
         self.assertEquals(new_world.size, self.world.size)
@@ -44,9 +45,10 @@ class StorageTest(unittest.TestCase):
     def test_with_statement(self):
         t1 = Tile("grass", (0, 0))
         storage = Storage(t1)
-        storage.write()
+        storage.write(make_dirty=True)
         with Storage.from_file(t1.storage_location()) as tile:
             tile._terrain = "plain"
+            dirty(self)
         t2 = storage.read()
         self.assertEquals("plain", t2.terrain)
         self.assertEquals(t1.position, t2.position)
@@ -74,3 +76,6 @@ class StorageTest(unittest.TestCase):
         for symlink in symlinks_kept:
             self.assertTrue(os.path.exists(symlink))
 
+    def test_no_dirty_set(self):
+        self.tile_storage.write() # no make_dirty
+        self.assertFalse(os.path.exists(self.tile.storage_location()))
