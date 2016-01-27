@@ -48,9 +48,9 @@ def createPipe(playerName):
 def initializePlayerGameObjects(world, num, playerName):
     start_position = world.start_coordinates[num]
     resources = Resources(owner=playerName, gold=200, position=start_position)
-    Storage(resources).write()
+    Storage(resources).write(make_dirty=True)
     slave = SlaveUnit(position=start_position, owner=playerName)
-    Storage(slave).write()
+    Storage(slave).write(make_dirty=True)
 
 def changeToLowerPriviledgedUser():
     p("trying to change user to ", USER_RTSHSRV)
