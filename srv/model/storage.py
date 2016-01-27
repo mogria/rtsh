@@ -8,7 +8,7 @@ from model.unitfactory import UnitFactory
 from model.buildingfactory import BuildingFactory
 from model.resources import Resources
 
-class InvalidGameObectError(Exception):
+class InvalidGameObjectError(Exception):
     def __init__(self, file, message, inner_exception = None):
         self.file = file
         self.message = message

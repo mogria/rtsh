@@ -7,8 +7,7 @@ class TrainingError(Exception):
         super(TrainingError, self).__init__(message)
 
 class Trainer(metaclass=ABCMeta):
-
-    def __init__(self, training_progress = 0, training_queue=[], *args, **kwargs):
+    def __init__(self, training_progress=0, training_queue=[], *args, **kwargs):
         super(Trainer, self).__init__(*args, **kwargs)
         self._training_progress = training_progress
         self._training_queue = training_queue
@@ -39,7 +38,7 @@ class Trainer(metaclass=ABCMeta):
         pass
 
     def add_to_training_queue(self, unit_type):
-        if not unit_type in trainable_units():
+        if not unit_type in self.trainable_units():
             raise TrainingError("cannot train unit {0}".format(unit_type))
 
         self._training_queue.append(unit_type)
@@ -48,19 +47,19 @@ class Trainer(metaclass=ABCMeta):
         """should be called every tick, returns a Unit everytime
         a new unit has been trained, else None is returned."""
         if hasattr(self, 'usable') and not self.usable:
-            return
+            return None
 
-        if self._training_queue.count() == 0:
+        if len(self._training_queue) == 0:
             # nothing to do
-            return
+            return None
 
         trained_unit = self._training_queue[0]
-        trained_unit_info = trainable_units()[trained_unit]
+        trained_unit_info = self.trainable_units()[trained_unit]
         self._training_progress += 1
         if self._training_progress >= trained_unit_info['trainspeed']:
             # unit finished
             self._training_queue = self._training_queue[1:]
-            return UnitFactory(trained_unit, filterobject(self, ['position', 'owner']))
+            return UnitFactory(trained_unit, **filterobject(self, ['position', 'owner']))
 
         # nothing trained this tick
         return None

@@ -5,7 +5,7 @@ class CastleBuilding(Building, Trainer):
     def __init__(self, *args, **kwargs):
         super(CastleBuilding, self).__init__(*args, **kwargs)
 
-    def give_name():
+    def give_name(self):
         return "{0}'s Castle".format(self.owner)
 
     def max_health(self):

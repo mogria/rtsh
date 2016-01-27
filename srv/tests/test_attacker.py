@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import MagicMock
 from model.attacker import Attacker
 from model.destroyable import Destroyable
-from pprint import pprint
 
 class AttackerTest(unittest.TestCase):
     def setUp(self):
