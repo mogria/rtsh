@@ -27,7 +27,6 @@ build() {
 build mogria/rtsh-srv srv && \
 build mogria/rtsh-wetty-cli wetty-cli/ && \
 build mogria/rtsh-base-world "srv/lib"
-build mogria/rtsh-srv-test srv Dockerfile_test
 build mogria/rtsh-bower wetty-cli Dockerfile_bower
 
 # build all worlds
