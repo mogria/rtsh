@@ -1,7 +1,5 @@
 from model.builder import Builder
 from model.unit import Unit
-from model.storage import *
-from pprint import pprint
 
 class SlaveUnit(Unit, Builder):
     def __init__(self, *args, **kwargs):
