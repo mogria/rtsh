@@ -18,12 +18,12 @@ class Resources(GameObject, Positionable, Ownable):
         self._gold = new_gold
 
     @property
-    def stone(self):
-        return self._stone
+    def wood(self):
+        return self._wood
 
-    @stone.setter
-    def stone(self, new_stone):
-        self._stone = new_stone
+    @wood.setter
+    def wood(self, new_wood):
+        self._wood = new_wood
 
     @property
     def stone(self):
