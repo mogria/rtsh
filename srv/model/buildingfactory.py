@@ -1,4 +1,4 @@
-from model.commonfactory import CommonFactory
+from model.commonfactory import CommonFactory, is_valid_object_type
 from model.castlebuilding import CastleBuilding
 
 BUILDING_TYPES = {
@@ -11,5 +11,8 @@ BUILDING_TYPES = {
     'tower': None # can hit nearby enemy units
 }
 
-def BuildingFactory(building_type = "none",  *args, **kwargs):
+def BuildingFactory(building_type, *args, **kwargs):
     return CommonFactory("building", building_type, BUILDING_TYPES, *args, **kwargs)
+
+def is_valid_building_type(building_type):
+    return is_valid_object_type(building_type, BUILDING_TYPES)

@@ -8,7 +8,7 @@ from abc import ABCMeta, abstractmethod
 
 class Building(GameObject, Destroyable, Positionable, Nameable, Ownable, metaclass=ABCMeta):
     def __init__(self, building_id=-1, building_type="none", usable=False, *args, **kwargs):
-        super(Building, self).__init__("building", *args, **kwargs)
+        super(Building, self).__init__(classname = "building", *args, **kwargs)
         self._building_id = building_id if building_id != -1 else new_id()
         self._building_type = building_type
         self._usable = usable
@@ -35,6 +35,6 @@ class Building(GameObject, Destroyable, Positionable, Nameable, Ownable, metacla
         return "{0}/buildings/building-{1}.json".format(Ownable.storage_location(self), self.building_id)
 
     def symlinks(self):
-        return [ "{0}/buildings/building-{1}.json".format(Positionable.storage_location(self), self.building_id)
+        return [ "{0}/building/building.json".format(Positionable.storage_location(self), self.building_id)
                , "{0}/buildings/by-type/{1}/building-{2}.json".format(Ownable.storage_location(self), self.building_type, self.building_id)
                ]

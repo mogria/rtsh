@@ -1,12 +1,14 @@
 from commands.invalidGameCommandError import InvalidGameCommandError
 from commands.cheatCreateUnitCommand import CheatCreateUnitCommand
 from commands.moveUnitCommand import MoveUnitCommand
+from commands.buildCommand import BuildCommand
 
 
 def createCommandClass(player_name, cmd_name, cmd_args):
     commands = {
         "cheat_create_unit": CheatCreateUnitCommand,
-        "move_unit": MoveUnitCommand
+        "move_unit": MoveUnitCommand,
+        "build": BuildCommand
     }
 
     if cmd_name not in commands:

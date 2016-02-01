@@ -3,6 +3,7 @@ import time
 
 from printWithFlush import p
 from model.storage import Storage
+from model.builder import Builder
 from commandQueueProcessor import CommandQueueProcessor
 
 
@@ -20,13 +21,15 @@ class TickSystem(object):
             cqp.processCommands()
 
     def get_unit_files(self):
-        return glob.glob("/world/**/unit*.json", recursive=True)
+        return glob.glob("/world/**/unit-*.json", recursive=True)
 
-    def move_units(self):
+    def units_tick(self):
         unit_files = self.get_unit_files()
         for f in unit_files:
             with Storage.from_file(f) as u:
                 u.move()
+                if isinstance(u, Builder):
+                    u.build()
 
     def start(self):
         tick = 0
@@ -35,4 +38,4 @@ class TickSystem(object):
             p("tick ", tick)
             tick += 1
             self.process_user_commands()
-            self.move_units()
+            self.units_tick()

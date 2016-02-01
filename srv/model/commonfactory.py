@@ -9,7 +9,7 @@ def CommonFactory(object_name, object_type, object_types, *args, **kwargs):
         object_name - the name of the object which should be passed onto the error messages 
         object_type - the type of the object which should be constructed, needs to be a key in object_types
         object_types - a dictionary with all the object_type's as key and a callable function/classname as value"""
-    if not object_type in object_types:
+    if not is_valid_object_type(object_type, object_types):
         raise ConstructionError(object_name, object_type, "no such {0} type".format(object_name))
     object_class = object_types[object_type]
     if object_class is None:
@@ -17,4 +17,7 @@ def CommonFactory(object_name, object_type, object_types, *args, **kwargs):
     obj = object_class(*args, **kwargs)
     dirty(obj)
     return obj
+
+def is_valid_object_type(object_type, object_types):
+    return object_type in object_types;
 
