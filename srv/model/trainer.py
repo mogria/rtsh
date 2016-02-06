@@ -3,9 +3,11 @@ from model.unitfactory import UnitFactory
 from model.util import filterobject
 from model.dirty import dirty
 
+
 class TrainingError(Exception):
     def __init__(self, message):
         super(TrainingError, self).__init__(message)
+
 
 class Trainer(metaclass=ABCMeta):
     def __init__(self, training_progress=0, training_queue=[], *args, **kwargs):
@@ -46,7 +48,7 @@ class Trainer(metaclass=ABCMeta):
         dirty(self)
 
     def train(self):
-        """should be called every tick, returns a Unit everytime
+        """should be called every tick, returns a Unit every time
         a new unit has been trained, else None is returned."""
         if hasattr(self, 'usable') and not self.usable:
             return None
