@@ -1,10 +1,14 @@
 import unittest
-from model.trainer import TrainingError
+
+from unittest.mock import patch
+from unittest.mock import MagicMock
+from model.trainer import TrainingError, Trainer
 from model.castlebuilding import CastleBuilding
+
 
 class TrainerTest(unittest.TestCase):
     def setUp(self):
-        self.castle = CastleBuilding(position=(0, 0), owner="dude3", usable=True, training_queue=[])
+        self.castle = CastleBuilding(position=(0, 0), owner="dude3", training_queue=[])
 
     def tearDown(self):
         del self.castle
@@ -20,7 +24,8 @@ class TrainerTest(unittest.TestCase):
         self.assertRaises(TrainingError, self.castle.add_to_training_queue, 'unit-which-cant-be-trained')
 
     def test_train_unusable(self):
-        self.castle._usable = False
+        self.castle._health = -1
+
         self.castle.add_to_training_queue('slave')
         previous_progress = self.castle.training_progress
         for x in range(27):

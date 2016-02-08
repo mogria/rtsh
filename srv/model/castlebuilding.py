@@ -1,6 +1,7 @@
 from model.building import Building
 from model.trainer import Trainer
 
+
 class CastleBuilding(Building, Trainer):
     def __init__(self, *args, **kwargs):
         super(CastleBuilding, self).__init__(*args, **kwargs)
