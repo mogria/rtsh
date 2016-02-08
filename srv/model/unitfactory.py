@@ -1,9 +1,9 @@
 from model.commonfactory import CommonFactory
-from model.slaveunit import SlaveUnit
-from model.squireunit import SquireUnit
-from model.swordfighterunit import SwordfighterUnit
-from model.archerunit import ArcherUnit
-from model.cavalryunit import CavalryUnit
+from model.units.slaveunit import SlaveUnit
+from model.units.squireunit import SquireUnit
+from model.units.swordfighterunit import SwordfighterUnit
+from model.units.archerunit import ArcherUnit
+from model.units.cavalryunit import CavalryUnit
 
 UNIT_TYPES = {
     'slave': SlaveUnit,

@@ -1,5 +1,5 @@
 from model.commonfactory import CommonFactory, is_valid_object_type
-from model.castlebuilding import CastleBuilding
+from model.buildings.castlebuilding import CastleBuilding
 
 BUILDING_TYPES = {
     'castle': CastleBuilding, # main building, trains slaves, also acts as a warehouse
