@@ -3,8 +3,8 @@ from model.tile import Tile
 
 class TileTest(unittest.TestCase):
     def setUp(self):
-        self.t1 = Tile("grass", (1, 2))
-        self.t2 = Tile("desert", [1, 2])
+        self.t1 = Tile("grass", abilities: {'positionable': {'position': (1, 2)}})
+        self.t2 = Tile("desert",abilities: {'positionable': {'position': [1, 2]}})
 
     def test_construct(self):
         self.assertEquals(self.t1.terrain, "grass")
