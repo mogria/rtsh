@@ -2,16 +2,20 @@ import numpy
 import os
 import random
 
-from model.positionable import Positionable
+from model.abilities.ability import Ability
+from model.abilities.positionable import Positionable
 from model.dirty import dirty
 
 
 class Moveable(Positionable):
-    def __init__(self, move_speed=1, move_cycle=-1, move_target=None, *args, **kwargs):
+    def __init__(self, move_speed=1, *args, **kwargs):
         super(Moveable, self).__init__(*args, **kwargs)
         self._move_speed = move_speed
-        self._move_cycle = move_cycle
-        self._move_target = move_target
+        self._move_cycle = 0
+        self._move_target = None
+
+    def ability_name(self):
+        return "moveable"
 
     @property
     def move_speed(self):
@@ -28,6 +32,11 @@ class Moveable(Positionable):
     @move_target.setter
     def move_target(self, move_target):
         # TODO: check for valid coordinates
+        self._move_target = move_target
+
+    def update(self, move_cycle=-1, move_target=None, *args, **kwargs):
+        super(Positionable, self).update(*args, **kwargs)
+        self._move_cycle = move_cycle
         self._move_target = move_target
 
     def reset_move_cycle(self):

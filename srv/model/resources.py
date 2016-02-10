@@ -1,10 +1,12 @@
 from model.gameobject import GameObject
-from model.positionable import Positionable
-from model.ownable import Ownable
+from model.abilities.positionable import Positionable
+from model.abilities.ownable import Ownable
 
-class Resources(GameObject, Positionable, Ownable):
+class Resources(GameObject):
     def __init__(self, gold = 0, wood = 0, stone = 0, *args, **kwargs):
-        super(Resources, self).__init__(*args, **kwargs)
+        self._register_ability(Positionable())
+        self._register_ability(Ownable())
+        super(Resources, self).__init__('resources', *args, **kwargs)
         self._gold = gold
         self._wood = 0
         self._stone = 0

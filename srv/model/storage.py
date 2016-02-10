@@ -97,6 +97,10 @@ class Storage(object):
         # write the file (possibly to a new location)
         with open(self._old_storage_location, "w") as f:
             json_properties = filterproperties(self._obj)
+            json_properties["abilities"] = {}
+            for key, ability in self._obj.abilities.items():
+                json_properties["abilities"][key] = filterproperties(ability)
+
             json_properties["class"] = json_properties["classname"]
             del json_properties["classname"]
             json.dump(json_properties, f, indent=4, sort_keys=True)

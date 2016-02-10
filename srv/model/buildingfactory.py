@@ -1,8 +1,8 @@
 from model.commonfactory import CommonFactory, is_valid_object_type
-from model.buildings.castlebuilding import CastleBuilding
+from model.buildings.castle import Castle
 
 BUILDING_TYPES = {
-    'castle': CastleBuilding, # main building, trains slaves, also acts as a warehouse
+    'castle': Castle, # main building, trains slaves, also acts as a warehouse
     'warehouse': None, # units which carry resources can deposit them here
     'house': None, # increases food limit
     'barracks': None, # trains squires and swordfighters

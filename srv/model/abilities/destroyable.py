@@ -1,7 +1,8 @@
-from model.attacker import Attacker
+from model.abilities.ability import Ability
+from model.abilities.attacker import Attacker
 from model.dirty import dirty
 
-class Destroyable(object):
+class Destroyable(Ability):
     armor_types = {
         'heavy': 0,
         'medium': 1,
@@ -9,12 +10,14 @@ class Destroyable(object):
         'normal': 3
     }
 
-    def __init__(self, health = 1, armor_type = "normal", *args, **kwargs):
-        super(Destroyable, self).__init__(*args, **kwargs)
-        self._health = health
+    def __init__(self, armor_type="normal", health=1):
         if not armor_type in Destroyable.armor_types:
             raise ValueError("invalid armortype '{0}'".format(armor_type))
         self._armor_type = armor_type
+        self._health = health
+
+    def ability_name(self):
+        return "destroyable"
 
     @property
     def health(self):
@@ -24,8 +27,17 @@ class Destroyable(object):
     def armor_type(self):
         return self._armor_type
 
+    def update(self, health=1, *args, **kwargs):
+        self._health = health
+
     def is_destroyed(self):
         return self._health <= 0
+
+    def activate(self):
+        pass
+
+    def tick(self):
+        pass
 
     def get_attacked(self, damage, attack_type):
         dirty(self)

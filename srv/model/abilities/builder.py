@@ -1,13 +1,15 @@
+from model.abilities.ability import Ability
 from model.dirty import dirty
-from model.positionable import Positionable
 
 
-class Builder(Positionable):
-    def __init__(self, build_speed=0, capacity=0, build_target=None, *args, **kwargs):
-        super(Builder, self).__init__(*args, **kwargs)
+class Builder(Ability):
+    def __init__(self, build_speed=0, capacity=0):
         self._build_speed = build_speed
         self._capacity = capacity
-        self._build_target = build_target
+        self._build_target = None
+
+    def ability_name(self):
+        return "builder"
 
     @property
     def build_speed(self):
@@ -25,10 +27,18 @@ class Builder(Positionable):
     def build_target(self, build_target):
         self._build_target = build_target
 
+    def update(self, build_target=None, *args, **kwargs):
+        self._build_target = build_target
+
     def harvest(self, resources):
         pass
 
-    def build(self):
+    def activate(self):
+        # TODO: should set build target 
+        pass
+
+
+    def tick(self):
         """should be called every tick this builder is repairing or creating a building.
         Returns true when finished. False if more work can be done."""
         if self.build_target is None:

@@ -1,7 +1,8 @@
 import random
+from model.abilities.ability import Ability
 from model.dirty import dirty
 
-class Attacker(object):
+class Attacker(Ability):
     attack_types = {
         'pierce': 0,
         'blunt': 1,
@@ -9,18 +10,14 @@ class Attacker(object):
         'normal': 3
     }
 
-    def __init__(self, attack_type = "normal", attack_speed = 1, attack_range = 0, damage = 1, attack_cycle = -1, *args, **kwargs):
-        super(Attacker, self).__init__(*args, **kwargs)
+    def __init__(self, damage = 0, attack_type = "normal", attack_speed = 1, attack_range = 0):
         if not attack_type in Attacker.attack_types:
             raise ValueError("invalid attack type '{0}'".format(attack_type))
         self._attack_type = attack_type
         self._attack_speed = attack_speed
         self._attack_range = attack_range
         self._damage = damage
-        if attack_cycle == -1:
-            self.reset_attack_cycle()
-        else:
-            self._attack_cycle = attack_cycle
+        self._attack_cycle = -1
 
     @property
     def attack_type(self):
@@ -41,6 +38,17 @@ class Attacker(object):
     @property
     def attack_cycle(self):
         return self._attack_cycle
+
+    def update(self, attack_cycle = -1, *args, **kwargs):
+        self._attack_cycle = attack_cycle
+
+    def activate(self):
+        # TODO: save attack target
+        pass
+
+    def tick(self):
+        # TODO: grab attack target and call attack() method
+        pass
 
     def reset_attack_cycle(self):
         self._attack_cycle = self._attack_speed

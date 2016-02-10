@@ -1,16 +1,16 @@
 from model.commonfactory import CommonFactory
-from model.units.slaveunit import SlaveUnit
-from model.units.squireunit import SquireUnit
-from model.units.swordfighterunit import SwordfighterUnit
-from model.units.archerunit import ArcherUnit
-from model.units.cavalryunit import CavalryUnit
+from model.units.slave import Slave
+from model.units.squire import Squire
+from model.units.swordfighter import Swordfighter
+from model.units.archer import Archer
+from model.units.cavalry import Cavalry
 
 UNIT_TYPES = {
-    'slave': SlaveUnit,
-    'squire': SquireUnit,
-    'swordfighter': SwordfighterUnit,
-    'archer': ArcherUnit,
-    'cavalry': CavalryUnit
+    'slave': Slave,
+    'squire': Squire,
+    'swordfighter': Swordfighter,
+    'archer': Archer,
+    'cavalry': Cavalry
 }
 
 def UnitFactory(unit_type = "none",  *args, **kwargs):

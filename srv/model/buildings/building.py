@@ -1,14 +1,18 @@
 from model.gameobject import GameObject
-from model.ownable import Ownable
-from model.nameable import Nameable
-from model.destroyable import Destroyable
-from model.positionable import Positionable
+from model.abilities.ownable import Ownable
+from model.abilities.nameable import Nameable
+from model.abilities.destroyable import Destroyable
+from model.abilities.positionable import Positionable
 from model.idgen import new_id
 from abc import ABCMeta, abstractmethod
 
 
-class Building(GameObject, Destroyable, Positionable, Nameable, Ownable, metaclass=ABCMeta):
+class Building(GameObject, metaclass=ABCMeta):
     def __init__(self, building_id=-1, building_type="none", *args, **kwargs):
+        self._register_ability(Destroyable())
+        self._register_ability(Positionable())
+        self._register_ability(Nameable())
+        self._register_ability(Ownable())
         super(Building, self).__init__(classname="building", *args, **kwargs)
         self._building_id = building_id if building_id != -1 else new_id()
         self._building_type = building_type

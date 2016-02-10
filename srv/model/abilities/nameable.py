@@ -4,17 +4,18 @@ from model.dirty import dirty
 
 class Nameable(metaclass=ABCMeta):
     _fake = Faker()
-    def __init__(self, name = None, *args, **kwargs):
+    def __init__(self, name = None, give_name_func=None, *args, **kwargs):
         super(Nameable, self).__init__(*args, **kwargs)
         self._name = name
+        self._give_name_func = give_name_func if hasattr(give_name_func, '__call__') else lambda f: "unnamed entity"
+
+    def ability_name(self):
+        return "nameable"
 
     @property
     def name(self):
         if self._name == None: # no name yet?
             dirty(self)
-            self._name = self.give_name() # then give it a name!
+            self._name = self._give_name_func(Nameable._fake) # then give it a name!
         return self._name
 
-    @abstractmethod
-    def give_name(self):
-        return "unnamed entity"

@@ -3,8 +3,8 @@ from model.gameobject import GameObject
 
 class World(GameObject):
     STORAGE_LOCATION = "/world/world.json"
-    def __init__(self, name="none", size=[-1, -1], max_players=0, start_coordinates=[], terrain_generator="none", seed=-1):
-        super(World, self).__init__("world")
+    def __init__(self, name="none", size=[-1, -1], max_players=0, start_coordinates=[], terrain_generator="none", seed=-1, *args, **kwargs):
+        super(World, self).__init__("world", *args, **kwargs)
         self._name = name
         self._size = (int(size[0]), int(size[1]))
         self._max_players = max_players
@@ -35,6 +35,9 @@ class World(GameObject):
     @property
     def seed(self):
         return self._seed
+
+    def initial_abilities(self):
+        return []
 
     def storage_location(self):
         return World.STORAGE_LOCATION

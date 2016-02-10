@@ -2,19 +2,20 @@ from abc import ABCMeta, abstractmethod
 
 class Ability(metaclass=ABCMeta):
     @abstractmethod
-    def get_property_names(self):
-        getproperties(self)
-
-    def get_properties(self):
-        filterproperties(self, self.get_property_names())
+    def ability_name(self):
+        pass
 
     @abstractmethod
-    def activate():
+    def update(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def activate(self):
         """gets executed when the ability gets activated. This may happen
         because of a command."""
         pass
 
     @abstractmethod
-    def tick():
+    def tick(self):
         """gets executed each tick, even when the Ability hasn't activated yet"""
         pass
