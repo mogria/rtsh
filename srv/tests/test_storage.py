@@ -5,7 +5,6 @@ from model.storage import Storage
 from model.tile import Tile
 from model.world import World
 from model.unitfactory import UnitFactory
-from model.dirty import dirty
 
 class StorageTest(unittest.TestCase):
 
@@ -48,7 +47,7 @@ class StorageTest(unittest.TestCase):
         storage.write(make_dirty=True)
         with Storage.from_file(t1.storage_location()) as tile:
             tile.terrain = "plain"
-            dirty(tile)
+            tile.dirty()
         t2 = storage.read()
         self.assertEquals("plain", t2.terrain)
         self.assertEquals(t1.ability('positionable').position, t2.ability('positionable').position)

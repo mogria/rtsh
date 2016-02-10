@@ -2,7 +2,6 @@ from commands.baseCommand import BaseCommand
 from model.buildingfactory import BuildingFactory, is_valid_building_type
 from model.storage import Storage
 from model.util import filterobject
-from model.dirty import dirty
 from model.builder import Builder
 
 class BuildCommand(BaseCommand):
@@ -21,7 +20,7 @@ class BuildCommand(BaseCommand):
             building = BuildingFactory(self._building_type, **initial_attributes)
             Storage(building).write()
             unit._build_target = unit.position
-            dirty(unit)
+            unit.dirty()
 
     @classmethod
     def isValid(cls, args):

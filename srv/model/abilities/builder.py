@@ -1,5 +1,4 @@
 from model.abilities.ability import Ability
-from model.dirty import dirty
 
 
 class Builder(Ability):
@@ -46,12 +45,12 @@ class Builder(Ability):
 
         if self.build_target.position != self.position:
             self._build_target = None
-            dirty(self)
+            self.dirty()
             return False
 
         max_health = self.build_target.max_health()
         if self.build_target.health < max_health:
-            dirty(self)
+            self.dirty()
             self.build_target._health += self._build_speed
             if self.build_target.health >= max_health:
                 self.build_target._health = max_health

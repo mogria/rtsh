@@ -1,4 +1,3 @@
-from model.dirty import dirty
 
 class ConstructionError(Exception):
     def __init__(self, object_name, object_type, message):
@@ -15,7 +14,7 @@ def CommonFactory(object_name, object_type, object_types, *args, **kwargs):
     if object_class is None:
         raise ConstructionError(object_name, object_type, "{0} not yet implemented".format(object_name))
     obj = object_class(*args, **kwargs)
-    dirty(obj)
+    obj.dirty()
     return obj
 
 def is_valid_object_type(object_type, object_types):

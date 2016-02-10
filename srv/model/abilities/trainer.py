@@ -1,7 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from model.unitfactory import UnitFactory
 from model.util import filterobject
-from model.dirty import dirty
 
 
 class TrainingError(Exception):
@@ -45,7 +44,7 @@ class Trainer(metaclass=ABCMeta):
             raise TrainingError("cannot train unit {0}".format(unit_type))
 
         self._training_queue.append(unit_type)
-        dirty(self)
+        self.dirty()
 
     def train(self):
         """should be called every tick, returns a Unit every time
@@ -57,7 +56,7 @@ class Trainer(metaclass=ABCMeta):
             # nothing to do
             return None
 
-        dirty(self)
+        self.dirty()
         trained_unit = self._training_queue[0]
         trained_unit_info = self.trainable_units()[trained_unit]
         self._training_progress += 1
