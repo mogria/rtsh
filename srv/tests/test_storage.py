@@ -11,13 +11,13 @@ class StorageTest(unittest.TestCase):
 
     def setUp(self):
         self.tempfile = tempfile.mkstemp()[1]
-        self.tile = Tile("grass", [1, 2])
+        self.tile = Tile("grass", abilities={'positionable': {'position': [1, 2]}})
         self.tile_storage = Storage(self.tile)
         self.world = World("name", [7, 8], 2, [[1, 1], [6, 6]])
         self.world_storage = Storage(self.world)
 
     def test_initialisation_by_object(self):
-        tile = Tile("grass", [0, 0])
+        tile = Tile("grass", abilities={'positionable': {'position': [0, 0]}})
         storage = Storage(tile)
         storage.write(make_dirty=True)
         tile2 = storage.read()
@@ -30,7 +30,7 @@ class StorageTest(unittest.TestCase):
         self.tile_storage.write(make_dirty=True)
         new_tile = self.tile_storage.read()
         self.assertEquals(new_tile.terrain, self.tile.terrain)
-        self.assertEquals(new_tile.position, self.tile.position)
+        self.assertEquals(new_tile.ability("positionable").position, self.tile.ability("positionable").position)
 
     def test_write_world(self):
         self.world_storage.write(make_dirty=True)
@@ -43,18 +43,18 @@ class StorageTest(unittest.TestCase):
         self.assertEquals(new_world.max_players, self.world.max_players)
 
     def test_with_statement(self):
-        t1 = Tile("grass", (0, 0))
+        t1 = Tile("grass", abilities={'positionable': {'position': (0, 0)}})
         storage = Storage(t1)
         storage.write(make_dirty=True)
         with Storage.from_file(t1.storage_location()) as tile:
-            tile._terrain = "plain"
-            dirty(self)
+            tile.terrain = "plain"
+            dirty(tile)
         t2 = storage.read()
         self.assertEquals("plain", t2.terrain)
-        self.assertEquals(t1.position, t2.position)
+        self.assertEquals(t1.ability('positionable').position, t2.ability('positionable').position)
 
     def test_moveable_gameobject_symlinks(self):
-        unit = UnitFactory('slave', position=(0, 1), owner="johnny")
+        unit = UnitFactory('slave', abilities={'positionable': {'position': (0, 1)}, 'ownable': {'owner': "johnny"}})
         storage = Storage(unit)
         self.assertFalse(os.path.exists(unit.storage_location()))
         for symlink in unit.symlinks():
@@ -66,7 +66,7 @@ class StorageTest(unittest.TestCase):
             self.assertTrue(os.path.exists(symlink))
 
         # new position should change a symlink
-        unit._position = (2, 3)
+        unit.ability('moveable').position = (2, 3)
         storage.write()
         removed_symlinks = set(previous_symlinks).difference(set(unit.symlinks()))
         for symlink in removed_symlinks:
