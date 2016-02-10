@@ -1,7 +1,6 @@
 import os
 import subprocess
 import shlex
-from pprint import pprint
 
 from printWithFlush import p
 from util import getQueuePathFromPlayerName
@@ -28,7 +27,6 @@ class CommandQueueProcessor(object):
     def process_command(self, command_with_args):
         command_with_args = self.remove_new_line_characters(command_with_args)
         splitter = shlex.split(command_with_args)
-        pprint(splitter)
         cmd_workdir = splitter[0]
         cmd_name = splitter[1]
         cmd_args = splitter[2:]
