@@ -30,7 +30,7 @@ class GameObject(metaclass=ABCMeta):
     def has_ability(self, ability_name):
         return ability_name in self._abilities
 
-    def self.dirty():
+    def dirty(self):
         self._dirty = True
 
     @abstractmethod
