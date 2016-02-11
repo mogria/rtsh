@@ -7,7 +7,6 @@ from model.gameobject import GameObject
 from model.unitfactory import UnitFactory
 from model.buildingfactory import BuildingFactory
 from model.resources import Resources
-from model.dirty import dirty
 
 class InvalidGameObjectError(Exception):
     def __init__(self, file, message, inner_exception = None):
@@ -68,7 +67,7 @@ class Storage(object):
 
     def write(self, make_dirty=False):
         if make_dirty:
-            dirty(self._obj)
+            self._obj.dirty()
 
         # no need to do anything if object hasn't changed
         if not self._obj._dirty:

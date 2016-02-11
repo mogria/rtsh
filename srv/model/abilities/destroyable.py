@@ -1,6 +1,5 @@
 from model.abilities.ability import Ability
 from model.abilities.attacker import Attacker
-from model.dirty import dirty
 
 class Destroyable(Ability):
     armor_types = {
@@ -40,7 +39,7 @@ class Destroyable(Ability):
         pass
 
     def get_attacked(self, damage, attack_type):
-        dirty(self)
+        self.dirty()
         bonusmap = [
             [2.0, 0.5, 1.0, 1.0],
             [1.0, 2.0, 0.5, 1.0],

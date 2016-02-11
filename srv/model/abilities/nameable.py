@@ -1,6 +1,5 @@
 from faker import Faker
 from abc import ABCMeta, abstractmethod
-from model.dirty import dirty
 
 class Nameable(metaclass=ABCMeta):
     _fake = Faker()
@@ -15,7 +14,7 @@ class Nameable(metaclass=ABCMeta):
     @property
     def name(self):
         if self._name == None: # no name yet?
-            dirty(self)
+            self.dirty()
             self._name = self._give_name_func(Nameable._fake) # then give it a name!
         return self._name
 
