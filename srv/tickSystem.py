@@ -3,7 +3,7 @@ import time
 
 from printWithFlush import p
 from model.storage import Storage
-from model.builder import Builder
+from model.abilities.builder import Builder
 from commandQueueProcessor import CommandQueueProcessor
 
 

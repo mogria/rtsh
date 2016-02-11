@@ -1,5 +1,5 @@
 import unittest
-from model.moveable import Moveable
+from model.abilities.moveable import Moveable
 
 class MoveableTest(unittest.TestCase):
     def setUp(self):

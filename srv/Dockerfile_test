@@ -8,4 +8,4 @@ VOLUME ["/gamesrv"]
 # run nosetests with the following options:
 # - consider file which have the executable flag set
 # - don't buffer stdout
-ENTRYPOINT ["nosetests", "--exe", "--nocapture"]
+ENTRYPOINT ["nosetests", "--exe"]

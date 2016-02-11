@@ -1,4 +1,4 @@
-from abc import ABCMeta, abstractmethod
+from model.abilities.ability import Ability
 from model.unitfactory import UnitFactory
 from model.util import filterobject
 
@@ -8,9 +8,17 @@ class TrainingError(Exception):
         super(TrainingError, self).__init__(message)
 
 
-class Trainer(metaclass=ABCMeta):
-    def __init__(self, training_progress=0, training_queue=[], *args, **kwargs):
+class Trainer(Ability):
+    def __init__(self, trainable_units = {}, *args, **kwargs):
         super(Trainer, self).__init__(*args, **kwargs)
+        self._training_progress = 0
+        self._training_queue = []
+        self._trainable_units = trainable_units
+
+    def ability_name(self):
+        return "trainer"
+
+    def update(self, training_progress=0, training_queue=[]):
         self._training_progress = training_progress
         self._training_queue = training_queue
 
@@ -22,7 +30,7 @@ class Trainer(metaclass=ABCMeta):
     def training_queue(self):
         return self._training_queue
 
-    @abstractmethod
+    @property
     def trainable_units(self):
         """returns a dictionary. In the form of
         {
@@ -37,6 +45,9 @@ class Trainer(metaclass=ABCMeta):
             'unit_type2': ...
         }
         """
+        return self._trainable_units
+
+    def activate(self):
         pass
 
     def add_to_training_queue(self, unit_type):
@@ -46,7 +57,7 @@ class Trainer(metaclass=ABCMeta):
         self._training_queue.append(unit_type)
         self.dirty()
 
-    def train(self):
+    def tick(self):
         """should be called every tick, returns a Unit every time
         a new unit has been trained, else None is returned."""
         if hasattr(self, 'usable') and not self.usable:

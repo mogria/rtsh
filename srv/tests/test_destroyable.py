@@ -1,5 +1,5 @@
 import unittest
-from model.destroyable import Destroyable
+from model.abilities.destroyable import Destroyable
 
 class DestroyableTest(unittest.TestCase):
     def setUp(self):

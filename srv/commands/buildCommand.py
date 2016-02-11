@@ -2,7 +2,7 @@ from commands.baseCommand import BaseCommand
 from model.buildingfactory import BuildingFactory, is_valid_building_type
 from model.storage import Storage
 from model.util import filterobject
-from model.builder import Builder
+from model.abilities.builder import Builder
 
 class BuildCommand(BaseCommand):
     def __init__(self, player_name, unit, building_type):

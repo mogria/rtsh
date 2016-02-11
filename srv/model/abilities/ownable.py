@@ -8,8 +8,8 @@ class Ownable(Ability):
     def ability_name(self):
         return "ownable"
 
-    def update(self, *args, **kwargs):
-        pass
+    def update(self, owner=None, *args, **kwargs):
+        self._owner = owner
 
     def activate(self):
         pass

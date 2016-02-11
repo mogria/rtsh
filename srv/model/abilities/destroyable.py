@@ -39,7 +39,6 @@ class Destroyable(Ability):
         pass
 
     def get_attacked(self, damage, attack_type):
-        self.dirty()
         bonusmap = [
             [2.0, 0.5, 1.0, 1.0],
             [1.0, 2.0, 0.5, 1.0],

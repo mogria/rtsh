@@ -19,7 +19,7 @@ class Tile(GameObject):
     @terrain.setter
     def terrain(self, new_terrain):
         if not new_terrain in Tile.VALID_TERRAINS:
-            raise ValueError("invalid terrain '{0!s}', valid terrains are {1}".format(new_terrain, ', '.join(Tile.valid_terrains)))
+            raise ValueError("invalid terrain '{0!s}', valid terrains are {1}".format(new_terrain, ', '.join(Tile.VALID_TERRAINS)))
             raise ValueError("invalid position tuple. Must be two coordinates and not negative")
         self._terrain = new_terrain
 

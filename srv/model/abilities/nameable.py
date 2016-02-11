@@ -14,7 +14,6 @@ class Nameable(metaclass=ABCMeta):
     @property
     def name(self):
         if self._name == None: # no name yet?
-            self.dirty()
             self._name = self._give_name_func(Nameable._fake) # then give it a name!
         return self._name
 

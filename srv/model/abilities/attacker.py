@@ -58,7 +58,6 @@ class Attacker(Ability):
     def attack(self, attacked_destroyable):
         self._attack_cycle -= 1
         if self._attack_cycle <= 0:
-            self.dirty()
             attack_damage = self.randomized_damage()
             attacked_destroyable.get_attacked(attack_damage, self.attack_type)
             # only reset attack cycle after we've actually attacked

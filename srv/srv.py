@@ -19,7 +19,7 @@ from tickSystem import TickSystem
 from model.resources import Resources
 from model.storage import Storage
 from model.world import World
-from model.slaveunit import SlaveUnit
+from model.slaveunit import Slave
 
 USER_RTSHSRV = "rtshsrv"
 GROUP_RTSHPLAYERS = "rtshplayers"
@@ -49,7 +49,7 @@ def initializePlayerGameObjects(world, num, playerName):
     start_position = world.start_coordinates[num]
     resources = Resources(owner=playerName, gold=200, position=start_position)
     Storage(resources).write(make_dirty=True)
-    slave = SlaveUnit(position=start_position, owner=playerName)
+    slave = Slave(position=start_position, owner=playerName)
     Storage(slave).write(make_dirty=True)
 
 def changeToLowerPriviledgedUser():

@@ -1,16 +1,18 @@
 import unittest
-from model.unit import Unit
-from model.attacker import Attacker
-from model.builder import Builder
-from model.slaveunit import SlaveUnit
+from model.units.unit import Unit
+from model.units.slave import Slave
+from model.abilities.attacker import Attacker
+from model.abilities.builder import Builder
 
-class SlaveUnitTest(unittest.TestCase):
+class SlaveTest(unittest.TestCase):
     def setUp(self):
-        self.slave = SlaveUnit(position = (0, 0), owner = "johnny")
+        self.slave = Slave(abilities={'ownable': {'owner': 'johnny'}})
 
     def test_instance(self):
         self.assertIsInstance(self.slave, Unit)
-        self.assertIsInstance(self.slave, Builder)
+        self.assertIsInstance(self.slave.ability("builder"), Builder)
+        self.assertNotIsInstance(self.slave, Builder)
+        self.assertNotIsInstance(self.slave.ability("attacker"), Builder)
         self.assertNotIsInstance(self.slave, Attacker)
 
     def test_values(self):

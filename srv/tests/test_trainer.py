@@ -2,13 +2,13 @@ import unittest
 
 from unittest.mock import patch
 from unittest.mock import MagicMock
-from model.trainer import TrainingError, Trainer
-from model.castlebuilding import CastleBuilding
+from model.abilities.trainer import TrainingError, Trainer
+from model.buildings.castle import Castle
 
 
 class TrainerTest(unittest.TestCase):
     def setUp(self):
-        self.castle = CastleBuilding(position=(0, 0), owner="dude3", training_queue=[])
+        self.castle = Castle(position=(0, 0), owner="dude3", training_queue=[])
 
     def tearDown(self):
         del self.castle

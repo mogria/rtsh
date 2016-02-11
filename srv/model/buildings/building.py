@@ -9,10 +9,6 @@ from abc import ABCMeta, abstractmethod
 
 class Building(GameObject, metaclass=ABCMeta):
     def __init__(self, building_id=-1, building_type="none", *args, **kwargs):
-        self._register_ability(Destroyable())
-        self._register_ability(Positionable())
-        self._register_ability(Nameable())
-        self._register_ability(Ownable())
         super(Building, self).__init__(classname="building", *args, **kwargs)
         self._building_id = building_id if building_id != -1 else new_id()
         self._building_type = building_type
@@ -24,6 +20,13 @@ class Building(GameObject, metaclass=ABCMeta):
     @property
     def building_type(self):
         return self._building_type
+
+    def initial_abilities(self):
+        return [ Destroyable(health=self.max_health(), armor_type='normal')
+               , Positionable()
+               , Nameable()
+               , Ownable()
+               ]
 
     @property
     def usable(self):

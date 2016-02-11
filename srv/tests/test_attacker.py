@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock
-from model.attacker import Attacker
-from model.destroyable import Destroyable
+from model.abilities.attacker import Attacker
+from model.abilities.destroyable import Destroyable
 
 class AttackerTest(unittest.TestCase):
     def setUp(self):

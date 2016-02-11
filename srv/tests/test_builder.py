@@ -1,12 +1,12 @@
 import unittest
-from model.castlebuilding import CastleBuilding
-from model.builder import Builder
+from model.buildings.castle import Castle
+from model.abilities.builder import Builder
 
 
 class BuilderTest(unittest.TestCase):
     def setUp(self):
-        self.builder = Builder(build_speed=41, position=(0, 0))
-        self.building = CastleBuilding(position=(0, 0))
+        self.builder = Builder(build_speed=41)
+        self.building = Castle(position=(0, 0))
 
     def test_building_before_build(self):
         self.assertEquals(1, self.building.health)
