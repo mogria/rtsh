@@ -19,6 +19,9 @@ class Attacker(Ability):
         self._damage = damage
         self._attack_cycle = -1
 
+    def ability_name(self):
+        return "attacker"
+
     @property
     def attack_type(self):
         return self._attack_type

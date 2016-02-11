@@ -1,11 +1,11 @@
 import unittest
 from model.commonfactory import ConstructionError
 from model.unitfactory import UnitFactory, UNIT_TYPES
-from model.slaveunit import SlaveUnit
-from model.squireunit import SquireUnit
-from model.swordfighterunit import SwordfighterUnit
-from model.archerunit import ArcherUnit
-from model.cavalryunit import CavalryUnit
+from model.units.slave import Slave
+from model.units.squire import Squire
+from model.units.swordfighter import Swordfighter
+from model.units.archer import Archer
+from model.units.cavalry import Cavalry
 
 class UnitFactoryTest(unittest.TestCase):
     def test_invalid_unit_type(self):
@@ -16,16 +16,16 @@ class UnitFactoryTest(unittest.TestCase):
         self.assertRaises(ConstructionError, UnitFactory, 'undefinedunit')
 
     def test_construct_slave(self):
-        self.assertIsInstance(UnitFactory('slave', position = (0, 0)), SlaveUnit)
+        self.assertIsInstance(UnitFactory('slave', position = (0, 0)), Slave)
 
     def test_construct_squire(self):
-        self.assertIsInstance(UnitFactory('squire', position = (0, 0)), SquireUnit)
+        self.assertIsInstance(UnitFactory('squire', position = (0, 0)), Squire)
 
     def test_construct_swordfighter(self):
-        self.assertIsInstance(UnitFactory('swordfighter', position = (0, 0)), SwordfighterUnit)
+        self.assertIsInstance(UnitFactory('swordfighter', position = (0, 0)), Swordfighter)
 
     def test_construct_archer(self):
-        self.assertIsInstance(UnitFactory('archer', position = (0, 0)), ArcherUnit)
+        self.assertIsInstance(UnitFactory('archer', position = (0, 0)), Archer)
 
     def test_construct_cavalry(self):
-        self.assertIsInstance(UnitFactory('cavalry', position = (0, 0)), CavalryUnit)
+        self.assertIsInstance(UnitFactory('cavalry', position = (0, 0)), Cavalry)
