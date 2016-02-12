@@ -8,8 +8,8 @@ class Squire(Unit):
     def __init__(self, *args, **kwargs):
         super(Squire, self).__init__('squire', *args, **kwargs)
 
-    def give_name(self):
-        return _fake.first_name() + " the Squire"
+    def give_name(self, faker):
+        return faker.first_name() + " the Squire"
 
     def initial_abilities(self):
         return super(Squire, self).initial_abilities() + [

@@ -4,8 +4,9 @@ from model.abilities.ownable import Ownable
 from model.abilities.destroyable import Destroyable
 from model.abilities.moveable import Moveable
 from model.idgen import new_id
+from abc import ABCMeta, abstractmethod
 
-class Unit(GameObject):
+class Unit(GameObject, metaclass=ABCMeta):
     def __init__(self, unit_type, unit_id=-1, *args, **kwargs):
         super(Unit, self).__init__("unit", *args, **kwargs)
         self._unit_id = unit_id if unit_id != -1 else new_id()
@@ -19,8 +20,12 @@ class Unit(GameObject):
     def unit_type(self):
         return self._unit_type
 
+    @abstractmethod
+    def give_name(self, faker):
+        pass
+
     def initial_abilities(self):
-        return [ Nameable()
+        return [ Nameable(give_name_func=lambda f: self.give_name(f))
                , Ownable(owner=None)
                , Destroyable()
                , Moveable()

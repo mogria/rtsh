@@ -7,8 +7,8 @@ class Archer(Unit):
     def __init__(self, *args, **kwargs):
         super(Archer, self).__init__('archer', *args, **kwargs)
 
-    def give_name(self):
-        return _fake.name()
+    def give_name(self, faker):
+        return faker.name()
 
     def initial_abilities(self):
         return super(Archer, self).initial_abilities() + [

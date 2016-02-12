@@ -6,7 +6,11 @@ class Nameable(metaclass=ABCMeta):
     def __init__(self, name = None, give_name_func=None, *args, **kwargs):
         super(Nameable, self).__init__(*args, **kwargs)
         self._name = name
-        self._give_name_func = give_name_func if hasattr(give_name_func, '__call__') else lambda f: "unnamed entity"
+        self._give_name_func = None 
+        if hasattr(give_name_func, '__call__'):
+            self._give_name_func = give_name_func
+        else:
+            self._give_name_func = lambda f: "unnamed entity"
 
     def ability_name(self):
         return "nameable"

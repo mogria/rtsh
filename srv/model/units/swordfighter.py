@@ -7,8 +7,8 @@ class Swordfighter(Unit):
     def __init__(self, *args, **kwargs):
         super(Swordfighter, self).__init__('swordfighter', *args, **kwargs)
 
-    def give_name(self):
-        return self._fake.name() + " of " + self._fake.city()
+    def give_name(self, faker):
+        return faker.name() + " of " + self._fake.city()
 
     def initial_abilities(self):
         return super(Swordfighter, self).initial_abilities() + [

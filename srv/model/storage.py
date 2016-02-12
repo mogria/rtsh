@@ -102,6 +102,7 @@ class Storage(object):
 
             json_properties["class"] = json_properties["classname"]
             del json_properties["classname"]
+            print(json_properties)
             json.dump(json_properties, f, indent=4, sort_keys=True)
             f.write('\n') # add addtional \n for better viewing on shell
 

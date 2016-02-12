@@ -7,12 +7,12 @@ class Slave(Unit):
     def __init__(self, *args, **kwargs):
         super(Slave, self).__init__("slave", *args, **kwargs)
 
+    def give_name(self, faker):
+        return "Slave #{0}".format(self.unit_id)
+
     def initial_abilities(self):
         return super(Slave, self).initial_abilities() + [
                  Destroyable(health=50, armor_type='light')
                , Moveable(move_speed=2)
                , Builder(build_speed=50, capacity=50)
                ]
-
-    def give_name(self):
-        return "Slave #{0}".format(self.unit_id)

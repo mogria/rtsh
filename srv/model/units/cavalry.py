@@ -7,8 +7,8 @@ class Cavalry(Unit):
     def __init__(self, *args, **kwargs):
         super(Cavalry, self).__init__('cavalry', *args, **kwargs)
 
-    def give_name(self):
-        return "Sir " + _fake.last_name() + "of" + _fake.city()
+    def give_name(self, faker):
+        return "Sir " + faker.last_name() + "of" + faker.city()
 
     def initial_abilities(self):
         return super(Cavalry, self).initial_abilities() + [
