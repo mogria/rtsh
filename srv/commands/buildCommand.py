@@ -7,8 +7,7 @@ from model.builder import Builder
 
 class BuildCommand(BaseCommand):
     def __init__(self, player_name, unit, building_type):
-        super().__init__("Build")
-        self._player_name = player_name
+        super().__init__("Build", player_name)
         self._unit = unit
         self._building_type = building_type
 
@@ -24,7 +23,7 @@ class BuildCommand(BaseCommand):
             dirty(unit)
 
     @classmethod
-    def isValid(cls, args):
+    def isValid(cls, player_name, args):
         super().isValid(args)
 
         if cls.has_correct_num_of_args(args) \

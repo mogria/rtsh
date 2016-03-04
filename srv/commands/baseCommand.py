@@ -2,8 +2,9 @@ import abc
 
 
 class BaseCommand(metaclass=abc.ABCMeta):
-    def __init__(self, cmd_name):
+    def __init__(self, cmd_name, player_name):
         self._cmd_name = cmd_name
+        self._player_name = player_name
 
     @abc.abstractmethod
     def execute(self):

@@ -9,13 +9,13 @@ class CheatCreateUnitCommandTest(unittest.TestCase):
     def test_isValid_Only2Args_NotValid(self):
         expected = False
         only_2_args = [1, 2]
-        result = CheatCreateUnitCommand.isValid(only_2_args)
+        result = CheatCreateUnitCommand.isValid("player1", only_2_args)
         self.assertEqual(expected, result)
 
     def test_isValid_3Args_Valid(self):
         expected = True
         valid_args = ["swordfighter", 1, 2]
-        result = CheatCreateUnitCommand.isValid(valid_args)
+        result = CheatCreateUnitCommand.isValid("player1", valid_args)
         self.assertEqual(expected, result)
 
     @patch("commands.cheatCreateUnitCommand.os.symlink")

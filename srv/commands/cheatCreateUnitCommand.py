@@ -8,8 +8,7 @@ from model.unitfactory import UnitFactory
 
 class CheatCreateUnitCommand(BaseCommand):
     def __init__(self, player_name, unit_type, x, y):
-        super().__init__("CheatCreateUnit")
-        self._player_name = player_name
+        super().__init__("CheatCreateUnit", player_name)
         self._unit_type = unit_type
         self._x = int(x)
         self._y = int(y)
@@ -25,7 +24,7 @@ class CheatCreateUnitCommand(BaseCommand):
         print(msg)
 
     @classmethod
-    def isValid(cls, args):
+    def isValid(cls, player_name, args):
         super().isValid(args)
         if len(args) == 3 and args[0] in model.unitfactory.UNIT_TYPES:
             return True

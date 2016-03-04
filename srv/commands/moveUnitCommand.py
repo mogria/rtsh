@@ -7,8 +7,7 @@ from model.world import World
 
 class MoveUnitCommand(BaseCommand):
     def __init__(self, player_name, unit_id, x, y):
-        super().__init__("MoveUnit")
-        self._player_name = player_name
+        super().__init__("MoveUnit", player_name)
         self._unit_id = int(unit_id)
         self._x = int(x)
         self._y = int(y)
@@ -25,12 +24,12 @@ class MoveUnitCommand(BaseCommand):
             unit.move_target = (self._x, self._y)
 
     @classmethod
-    def isValid(cls, args):
+    def isValid(cls, player_name, args):
         super().isValid(args)
 
         if cls.has_correct_num_of_args(args) \
                 and cls.is_valid_position(int(args[1]), int(args[2])) \
-                and cls.is_existing_id(int(args[0])):
+                and cls.is_existing_id_and_owned_by_player(int(args[0]), player_name):
             return True
 
         return False
@@ -48,6 +47,8 @@ class MoveUnitCommand(BaseCommand):
         return False
 
     @classmethod
-    def is_existing_id(cls, unit_id):
-        pattern = "/world/**/units/unit-{unit_id}.json".format(unit_id=unit_id)
-        return len(glob.glob(pattern, recursive=True)) == 1
+    def is_existing_id_and_owned_by_player(cls, unit_id, player_name):
+        pattern = "/home/{player_name}/units/unit-{unit_id}.json".format(player_name=player_name, unit_id=unit_id)
+        print("pattern: " + pattern)
+        matching_units = glob.glob(pattern, recursive=True)
+        return len(matching_units) == 1

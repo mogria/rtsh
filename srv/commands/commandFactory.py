@@ -14,7 +14,7 @@ def createCommandClass(player_name, cmd_name, cmd_args):
     if cmd_name not in commands:
         raise InvalidGameCommandError(cmd_name, cmd_args, "no command implemented with name: " + cmd_name)
 
-    is_valid = commands[cmd_name].isValid(cmd_args)
+    is_valid = commands[cmd_name].isValid(player_name, cmd_args)
     if not is_valid:
         raise InvalidGameCommandError(cmd_name, "command: " + cmd_name + " got invalid args: " + str(cmd_args))
 
