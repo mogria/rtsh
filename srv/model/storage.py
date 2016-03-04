@@ -85,10 +85,10 @@ class Storage(object):
             for symlink in self._old_symlinks:
                 os.remove(symlink)
         else:
-            # this is based on the assumtion that the same game object
+            # this is based on the assumption that the same game object
             # always returns the same amount of symlinks
             for idx, old_link in enumerate(self._old_symlinks):
-                res = Storage._remove_if_old(old_link, new_symlinks[idx])
+                Storage._remove_if_old(old_link, new_symlinks[idx])
         self._old_symlinks = new_symlinks
 
         # make sure the directory for the file exists
@@ -100,7 +100,7 @@ class Storage(object):
             json_properties["class"] = json_properties["classname"]
             del json_properties["classname"]
             json.dump(json_properties, f, indent=4, sort_keys=True)
-            f.write('\n') # add addtional \n for better viewing on shell
+            f.write('\n') # add additional \n for better viewing on shell
 
         # create new symlinks
         for new_link in self._old_symlinks:

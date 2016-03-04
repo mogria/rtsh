@@ -48,12 +48,12 @@ class StorageTest(unittest.TestCase):
         storage.write(make_dirty=True)
         with Storage.from_file(t1.storage_location()) as tile:
             tile._terrain = "plain"
-            dirty(self)
+            tile.dirty()
         t2 = storage.read()
         self.assertEquals("plain", t2.terrain)
         self.assertEquals(t1.position, t2.position)
 
-    def test_moveable_gameobject_symlinks(self):
+    def test_movable_gameobject_symlinks(self):
         unit = UnitFactory('slave', position=(0, 1), owner="johnny")
         storage = Storage(unit)
         self.assertFalse(os.path.exists(unit.storage_location()))
